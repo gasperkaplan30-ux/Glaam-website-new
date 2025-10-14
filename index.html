@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glaam - Trgovina s Cvetjem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=2024-10-14-mobile-fix">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="bloom-logo-loader">
+                <i class="fas fa-seedling"></i>
+                <span>Glaam</span>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand" data-page="domov">
+                <i class="fas fa-seedling"></i>
+                <span>Glaam</span>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="#domov" class="nav-link active" data-page="domov" data-i18n="nav.home">Domov</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#sopki" class="nav-link" data-page="sopki" data-i18n="nav.bouquets">Šopki</a>
+                    <div class="dropdown-menu">
+                        <a href="#sopki" class="dropdown-item" data-page="sopki" data-filter="romantic" data-i18n="nav.romantic">Romantični</a>
+                        <a href="#sopki" class="dropdown-item" data-page="sopki" data-filter="celebration" data-i18n="nav.celebration">Praznični</a>
+                        <a href="#sopki" class="dropdown-item" data-page="sopki" data-filter="seasonal" data-i18n="nav.seasonal">Sezonski</a>
+                        <a href="#sopki" class="dropdown-item" data-page="sopki" data-filter="custom" data-i18n="nav.custom">Po meri</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#poroka" class="nav-link" data-page="poroka" data-i18n="nav.wedding">Poroka</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#zalni" class="nav-link" data-page="zalni" data-i18n="nav.funeral">Žalni program</a>
+                </li>
+            </ul>
+            
+            <div class="nav-actions">
+                <div class="language-selector">
+                    <button class="language-btn active" id="langSLO" data-lang="sl" aria-label="Slovenščina">
+                        <img src="images/flag-si.svg" alt="Slovenia" class="language-flag">
+                    </button>
+                    <button class="language-btn" id="langANG" data-lang="en" aria-label="English">
+                        <img src="images/flag-uk.svg" alt="United Kingdom" class="language-flag">
+                    </button>
+                </div>
+                <div class="user-actions">
+                    <button class="login-btn" id="loginBtn">
+                        <i class="fas fa-user"></i>
+                        <span data-i18n="nav.login">Prijava</span>
+                    </button>
+                    <button class="logout-btn" id="logoutBtn" style="display: none;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span data-i18n="nav.logout">Odjava</span>
+                    </button>
+                </div>
+                <button class="cart-btn" id="cartBtn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="mobile-toggle" id="mobileToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Beautiful Cart Modal -->
+    <div id="simpleCart" class="cart-modal">
+        <div class="cart-overlay" onclick="hideCart()"></div>
+        <div class="cart-container">
+            <div class="cart-header">
+                <h2 class="cart-title" data-i18n="cart.title">🛒 Vaša Košarica</h2>
+                <button class="cart-close-btn" onclick="hideCart()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="cart-body">
+                <div id="cartContent" class="cart-content">
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p data-i18n="cart.empty">Vaša košarica je prazna</p>
+                        <span data-i18n="cart.emptySubtitle">Dodajte izdelke, da začnete z nakupom</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span class="total-label" data-i18n="cart.total">Skupaj:</span>
+                    <span id="cartTotalAmount" class="total-amount">0,00€</span>
+                </div>
+                <div class="cart-actions">
+                    <button class="btn-clear" onclick="clearCart()">
+                        <i class="fas fa-trash"></i>
+                        <span data-i18n="cart.clear">Očisti košarico</span>
+                    </button>
+                    <button class="btn-checkout" onclick="showOrderForm()">
+                        <i class="fas fa-credit-card"></i>
+                        <span data-i18n="cart.checkout">Zaključi nakup</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-content">
+            <div class="login-header">
+                <h3>Prijava</h3>
+                <button id="closeLogin" class="close-login">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <input type="email" id="loginEmail" name="email" required>
+                    <label for="loginEmail">Email naslov</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" name="password" required>
+                    <label for="loginPassword">Geslo</label>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span>Prijavi se</span>
+                    <i class="fas fa-sign-in-alt"></i>
+                </button>
+            </form>
+            <div class="login-footer">
+                <p>Nimaš računa? <a href="#" id="showRegister">Registriraj se</a></p>
+                <p><a href="#" id="showForgotPassword">Pozabil geslo?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="login-modal">
+        <div class="login-content">
+            <div class="login-header">
+                <h3>Pozabljeno geslo</h3>
+                <button id="closeForgotPassword" class="close-login">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="forgotPasswordForm" class="login-form">
+                <div class="form-group">
+                    <input type="email" id="forgotEmail" name="email" required>
+                    <label for="forgotEmail">Email naslov</label>
+                </div>
+                <div id="forgotPasswordError" class="error-message" style="display: none; color: #ff4757; font-size: 0.9rem; margin-bottom: 1rem;"></div>
+                <div id="forgotPasswordSuccess" class="success-message" style="display: none; color: #4caf50; font-size: 0.9rem; margin-bottom: 1rem;"></div>
+                <button type="submit" class="btn btn-primary">
+                    <span>Pošlji email za ponastavitev</span>
+                    <i class="fas fa-envelope"></i>
+                </button>
+            </form>
+            <div class="login-footer">
+                <p><a href="#" id="backToLogin">Nazaj na prijavo</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registrationModal" class="login-modal">
+        <div class="login-content">
+            <div class="login-header">
+                <h3>Registracija</h3>
+                <button id="closeRegistration" class="close-login">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="registrationForm" class="login-form">
+                <div class="form-group">
+                    <input type="email" id="registerEmail" name="email" required>
+                    <label for="registerEmail">Email naslov</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="registerPassword" name="password" required minlength="6">
+                    <label for="registerPassword">Geslo (min. 6 znakov)</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <label for="confirmPassword">Potrdi geslo</label>
+                </div>
+                <div id="passwordError" class="error-message" style="display: none; color: #ff4757; font-size: 0.9rem; margin-bottom: 1rem;"></div>
+                <div id="registrationSuccess" class="success-message" style="display: none; color: #4caf50; font-size: 0.9rem; margin-bottom: 1rem;"></div>
+                <button type="submit" class="btn btn-primary">
+                    <span>Registriraj se</span>
+                    <i class="fas fa-user-plus"></i>
+                </button>
+            </form>
+            <div class="login-footer">
+                <p>Že imaš račun? <a href="#" id="showLogin">Prijavi se</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Form Modal -->
+    <div id="orderModal" class="login-modal">
+        <div class="login-content order-content">
+            <div class="login-header">
+                <h3>Podatki za dostavo</h3>
+                <button id="closeOrder" class="close-login">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="orderForm" class="login-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="orderFirstName" name="firstName" required>
+                        <label for="orderFirstName">Ime</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="orderLastName" name="lastName" required>
+                        <label for="orderLastName">Priimek</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="orderAddress" name="address" required>
+                    <label for="orderAddress">Naslov (ulica in hišna številka)</label>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="orderPostalCode" name="postalCode" required pattern="[0-9]{4}">
+                        <label for="orderPostalCode">Poštna številka</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="orderCity" name="city" required>
+                        <label for="orderCity">Mesto</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="orderCountry" name="country" required value="Slovenija">
+                    <label for="orderCountry">Država</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="tel" id="orderPhone" name="phone" required>
+                    <label for="orderPhone">Telefon</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" id="orderEmail" name="email" required>
+                    <label for="orderEmail">Email naslov</label>
+                </div>
+                
+                <div id="orderError" class="error-message" style="display: none; color: #ff4757; font-size: 0.9rem; margin-bottom: 1rem;"></div>
+                
+                <div class="order-form-actions">
+                    <button type="button" class="btn btn-outline" onclick="glaam.hideOrderModal()">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Nazaj v košarico</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span>Nadaljuj na plačilo</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Overlay -->
+    <div id="loginOverlay" class="login-overlay"></div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Domov Page -->
+        <section id="domov" class="page-section active">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <div class="hero-background">
+                    <div class="hero-particles"></div>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-logo floating-animation">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="title-line" data-i18n="hero.title">Glaam</span>
+                        <span class="title-subtitle" data-i18n="hero.subtitle">Vaš partner za najlepše cvetne aranžmaje</span>
+                    </h1>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" data-page="sopki">
+                            <span data-i18n="hero.cta">Poglej Ponudbo</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- About Section -->
+            <section class="about-section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="section-tag" data-i18n="about.title">O nas</span>
+                        <h2 class="section-title" data-i18n="about.heading">Ustvarjamo z ljubeznijo</h2>
+                        <p class="section-description" data-i18n="about.description">
+                            Glaam je vaša destinacija za izjemne cvetne aranžmaje. Z ljubeznijo do narave in strasto do lepote 
+                            ustvarjamo edinstvene šopke, poročne aranžmaje in žalne venčke.
+                        </p>
+                    </div>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3 data-i18n="about.feature1.title">Z Ljubeznijo</h3>
+                            <p data-i18n="about.feature1.description">Vsak aranžma ustvarjamo z ljubeznijo in pozornostjo do detajlov.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h3 data-i18n="about.feature2.title">Sveže Cvetje</h3>
+                            <p data-i18n="about.feature2.description">Uporabljamo samo najsvežje cvetje iz najboljših virov.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                            <h3 data-i18n="about.feature3.title">Edinstveni Dizajni</h3>
+                            <p data-i18n="about.feature3.description">Vsak aranžma je unikaten in prilagojen vašim željam.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section class="stats-section">
+                <div class="container">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="1500">0</div>
+                            <div class="stat-label" data-i18n="stats.customers">Zadovoljnih Strank</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="250">0</div>
+                            <div class="stat-label" data-i18n="stats.weddings">Porok</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="5000">0</div>
+                            <div class="stat-label" data-i18n="stats.bouquets">Šopkov</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="15">0</div>
+                            <div class="stat-label" data-i18n="stats.experience">Let Izkušenj</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Šopki Page -->
+        <section id="sopki" class="page-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag" data-i18n="products.offer">Naša ponudba</span>
+                    <h1 class="section-title" data-i18n="products.title">Naši Šopki</h1>
+                    <p class="section-description" data-i18n="products.subtitle">
+                        Odkrijte našo čudovito kolekcijo šopkov za vsako priložnost
+                    </p>
+                </div>
+                
+                <!-- Filter Buttons -->
+                            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="romantic" data-i18n="nav.romantic">Romantični</button>
+                <button class="filter-btn" data-filter="celebration" data-i18n="nav.celebration">Praznični</button>
+                <button class="filter-btn" data-filter="seasonal" data-i18n="nav.seasonal">Sezonski</button>
+                <button class="filter-btn" data-filter="custom" data-i18n="nav.custom">Po meri</button>
+            </div>
+                
+                <!-- Custom bouquet size buttons (shown only for custom filter) -->
+                <div class="custom-size-buttons" id="customSizeButtons" style="display: none;">
+                    <button class="size-btn active" data-size="5" data-max-items="5">
+                        <span class="size-number">5</span>
+                        <span class="size-label" data-i18n="products.size5">Šopek petih rož</span>
+                        <span class="size-desc" data-i18n="products.size5Desc">Maksimalno 5 rož</span>
+                    </button>
+                    <button class="size-btn" data-size="10" data-max-items="10">
+                        <span class="size-number">10</span>
+                        <span class="size-label" data-i18n="products.size10">Šopek desetih rož</span>
+                        <span class="size-desc" data-i18n="products.size10Desc">Maksimalno 10 rož</span>
+                    </button>
+                    <button class="size-btn" data-size="unlimited" data-max-items="999">
+                        <span class="size-number infinity">∞</span>
+                        <span class="size-label" data-i18n="products.sizeUnlimited">Šopek neskončnih rož</span>
+                        <span class="size-desc" data-i18n="products.sizeUnlimitedDesc">Neomejeno rož</span>
+                    </button>
+                </div>
+
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Poroka Page -->
+        <section id="poroka" class="page-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag" data-i18n="wedding.subtitle">Posebni trenutki</span>
+                    <h1 class="section-title" data-i18n="wedding.title">Poročni Aranžmaji</h1>
+                    <p class="section-description" data-i18n="wedding.subtitle"> 
+                        Naredite svoj najlepši dan še bolj čaroben z našimi elegantnimi poročnimi aranžmaji
+                    </p>
+                </div>
+                
+               <!-- Wedding Content -->
+                <div class="wedding-content">
+                    <div class="wedding-info">
+                <h2 data-i18n="wedding.heading">Eleganca v Vsakem Detajlu</h2>
+                <p data-i18n="wedding.description">
+                            Naši poročni aranžmaji so zasnovani z mislijo na eleganco in romantiko. Vsak cvet je skrbno 
+                            izbran in postavljen, da ustvari popolno harmonijo za vaš poseben dan.
+                        </p>
+                        
+                        <div class="wedding-services">
+                            <div class="service-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="wedding.services.bouquets">Poročni šopki in boutonnières</span>
+                            </div>
+                            <div class="service-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="wedding.services.altar">Oltar in ceremonija dekoracije</span>
+                            </div>
+                            <div class="service-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="wedding.services.centerpieces">Centerpieces za sprejem</span>
+                            </div>
+                            <div class="service-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span data-i18n="wedding.services.personalized">Personalizirani dizajn</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wedding Cards Section - Centered -->
+                <div class="wedding-cards-info-centered">
+                    <div class="cards-visual">
+                        <div class="wedding-invitation-card">
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="card-text">
+                                    <div class="elegant-line"></div>
+                                    <p class="invitation-text" data-i18n="wedding.invite">Vabimo Vas</p>
+                                    <div class="elegant-line"></div>
+                                </div>
+                                <div class="card-decoration">
+                                    <i class="fas fa-leaf"></i>
+                                    <i class="fas fa-rose"></i>
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cards-description">
+                        <h3 data-i18n="wedding.cardsTitle">Poročne Vabila in Kartice</h3>
+                        <p data-i18n="wedding.cardsDescription">Pripravimo tudi elegantna poročna vabila, zahvalne kartice in druga tiskana gradiva, ki bodo popolno dopolnilo vaših cvetnih aranžmajev.</p>
+                        <div class="cards-features">
+                            <div class="feature-item">
+                                <i class="fas fa-palette"></i>
+                                <span data-i18n="wedding.cardsPersonalized">Personalizirani dizajn</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-print"></i>
+                                <span data-i18n="wedding.cardsPrint">Kakovostni tisk</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-envelope"></i>
+                                <span data-i18n="wedding.cardsService">Kompletna storitev</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        <!-- Wedding Packages Section -->
+        <div class="wedding-packages">
+            <h3 data-i18n="wedding.packages.title">Naši Poročni Paketi</h3>
+            <div class="packages-grid">
+       
+                <!-- Package 1 -->
+                <div class="package-card fade-in" onclick="togglePackageCard(this)">
+                    <div class="package-icon">
+                        <i class="fas fa-rings-wedding"></i>
+                    </div>
+                    <h4 data-i18n="wedding.packages.basic.title">Osnovni poročni paket</h4>
+                    <p data-i18n="wedding.packages.basic.description">Poročni šopek, gumbnica in osnovna dekoracija.</p>
+                    <ul class="package-includes">
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.basic.include1">Poročni šopek po meri neveste</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.basic.include2">Gumbnica za ženina</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.basic.include3">Osnovna dekoracija cerkve ali poročnega prostora</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.basic.include4">Usklajevanje barv in stilov med šopkom</span></li>
+                    </ul>
+                    <div class="package-footer">
+                        <div class="package-price">150€</div>
+                        <button class="package-btn" onclick="glaam.addToCart(101)">
+                            <i class="fas fa-shopping-bag"></i> <span data-i18n="wedding.packages.select">Dodaj v košarico</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Package 2 -->
+                <div class="package-card fade-in" onclick="togglePackageCard(this)">
+                    <div class="package-icon">
+                        <i class="fas fa-church"></i>
+                    </div>
+                    <h4 data-i18n="wedding.packages.classic.title">Klasični poročni paket</h4>
+                    <p data-i18n="wedding.packages.classic.description">Popoln poročni paket z dekoracijo cerkve.</p>
+                    <ul class="package-includes">
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.classic.include1">Poročni šopek po izbiri neveste</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.classic.include2">Gumbnica za ženina in družabnike</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.classic.include3">Cerkvena dekoracija (klopi, oltar, vhod)</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.classic.include4">Osrednji okraski za poudarek prostora</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.classic.include5">Ujemanje barvne teme z ostalo dekoracijo</span></li>
+                    </ul>
+                    <div class="package-footer">
+                        <div class="package-price">280€</div>
+                        <button class="package-btn" onclick="glaam.addToCart(102)">
+                            <i class="fas fa-shopping-bag"></i> <span data-i18n="wedding.packages.select">Dodaj v košarico</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Package 3 -->
+                <div class="package-card fade-in" onclick="togglePackageCard(this)">
+                    <div class="package-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h4 data-i18n="wedding.packages.luxury.title">Luksuzni poročni paket</h4>
+                    <p data-i18n="wedding.packages.luxury.description">Luksuzni poročni paket s popolno dekoracijo.</p>
+                    <ul class="package-includes">
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.luxury.include1">Poročni šopek po meri neveste z luksuznimi cvetličnimi detajli</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.luxury.include2">Gumbnica za ženina in družabnike</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.luxury.include3">Cerkvena dekoracija</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.luxury.include4">Osrednji okraski za cerkev in prostor (lok, sveče, cvetje)</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.luxury.include5">Dekoracija prizorišča za slavnostno vzdušje</span></li>
+                    </ul>
+                    <div class="package-footer">
+                        <div class="package-price">450€</div>
+                        <button class="package-btn" onclick="glaam.addToCart(103)">
+                            <i class="fas fa-shopping-bag"></i> <span data-i18n="wedding.packages.select">Dodaj v košarico</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Package 4 -->
+                <div class="package-card fade-in" onclick="togglePackageCard(this)">
+                    <div class="package-icon">
+                        <i class="fas fa-rose"></i>
+                    </div>
+                    <h4 data-i18n="wedding.packages.bouquetOnly.title">Poročni šopek</h4>
+                    <p data-i18n="wedding.packages.bouquetOnly.description">Poročni šopek za nevesto.</p>
+                    <ul class="package-includes">
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.bouquetOnly.include1">Izbira cvetja po želji in barvni temi poroke</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.bouquetOnly.include2">Možnost ujemanja z ženinom in dekoracijo poročnega prostora</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.bouquetOnly.include3">Unikatna izdelava po meri neveste</span></li>
+                    </ul>
+                    <div class="package-footer">
+                        <div class="package-price">85€</div>
+                        <button class="package-btn" onclick="glaam.addToCart(104)">
+                            <i class="fas fa-shopping-bag"></i> <span data-i18n="wedding.packages.select">Dodaj v košarico</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Package 5 -->
+                <div class="package-card fade-in" onclick="togglePackageCard(this)">
+                    <div class="package-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4 data-i18n="wedding.packages.boutonniereSet.title">Set gumbnic</h4>
+                    <p data-i18n="wedding.packages.boutonniereSet.description">Gumbnice za ženina in družabnike.</p>
+                    <ul class="package-includes">
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.boutonniereSet.include1">Ujemajoče se z barvno temo poroke in nevestevega šopka</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.boutonniereSet.include2">Možnost izbire različnih stilov (klasične, elegantne ali rustikalne)</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.boutonniereSet.include3">Set vsebuje 2× gumbnico</span></li>
+                    </ul>
+                    <div class="package-footer">
+                        <div class="package-price">45€</div>
+                        <button class="package-btn" onclick="glaam.addToCart(105)">
+                            <i class="fas fa-shopping-bag"></i> <span data-i18n="wedding.packages.select">Dodaj v košarico</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Package 6 -->
+                <div class="package-card fade-in" onclick="togglePackageCard(this)">
+                    <div class="package-icon">
+                        <i class="fas fa-cross"></i>
+                    </div>
+                    <h4 data-i18n="wedding.packages.church.title">Cerkvena dekoracija</h4>
+                    <p data-i18n="wedding.packages.church.description">Popolna dekoracija cerkve za poroko.</p>
+                    <ul class="package-includes">
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.church.include1">Aranžmaji ob oltarju, klopcah in vhodu v cerkev</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.church.include2">Usklajevanje barv in cvetja z nevestinim šopkom</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="wedding.packages.church.include3">Možnost sveč, cvetnih lističev in personaliziranih detajlov</span></li>
+                    </ul>
+                    <div class="package-footer">
+                        <div class="package-price">200€</div>
+                        <button class="package-btn" onclick="glaam.addToCart(106)">
+                            <i class="fas fa-shopping-bag"></i> <span data-i18n="wedding.packages.select">Dodaj v košarico</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <!-- Contact Form -->
+                <div class="contact-form-section">
+                    <h3 data-i18n="wedding.contact.title">Povprašajte za Ponudbo</h3>
+                    <form id="weddingForm" class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="name" name="name" required>
+                                <label for="name" data-i18n="wedding.contact.name">Vaše ime</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="email" name="email" required>
+                                <label for="email" data-i18n="wedding.contact.email">Email naslov</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="date" id="weddingDate" name="weddingDate" required>
+                                <label for="weddingDate" data-i18n="wedding.contact.date">Datum poroke</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="location" name="location" required>
+                                <label for="location" data-i18n="wedding.contact.location">Lokacija poroke</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="4" required></textarea>
+                            <label for="message" data-i18n="wedding.contact.message">Opišite vaše želje in vizijo...</label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <span data-i18n="wedding.contact.submit">Pošljite Povpraševanje</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Žalni Page -->
+        <section id="zalni" class="page-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag" data-i18n="funeral.subtitle">V spomin</span>
+                    <h1 class="section-title" data-i18n="funeral.title">Žalni program</h1>
+                    <p class="section-description" data-i18n="funeral.subtitle">
+                        V težkih trenutkih vam pomagamo izraziti spoštovanje in spomin z dostojanstvenimi aranžmaji
+                    </p>
+                </div>
+                
+                <!-- Funeral Products Grid -->
+                <div class="funeral-products">
+                    <!-- Venčki Section -->
+                    <div class="funeral-category">
+                    <h3 class="category-title" data-i18n="funeral.wreaths">Venčki</h3>
+                        <div class="products-grid">
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <i class="fas fa-circle"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-title" data-i18n="funeral.products.classicWreath">Klasični žalni venček</h4>
+                                    <p class="product-description" data-i18n="funeral.products.classicWreathDesc">Tradicionalni venček iz svežega cvetja in zelenja za dostojanstven spomin.</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">80€</div>
+                                        <button class="product-btn" onclick="glaam.addToCart(201)">
+                                            <i class="fas fa-shopping-bag"></i> <span data-i18n="products.addToCart">Dodaj v košarico</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <i class="fas fa-circle"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-title" data-i18n="funeral.products.luxuryWreath">Luksuzni venček</h4>
+                                    <p class="product-description" data-i18n="funeral.products.luxuryWreathDesc">Elegantni venček z ekskluzivnimi cvetovi za poseben spomin.</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">120€</div>
+                                        <button class="product-btn" onclick="glaam.addToCart(202)">
+                                            <i class="fas fa-shopping-bag"></i> <span data-i18n="products.addToCart">Dodaj v košarico</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <i class="fas fa-circle"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-title" data-i18n="funeral.products.smallWreath">Mali venček</h4>
+                                    <p class="product-description" data-i18n="funeral.products.smallWreathDesc">Kompaktni venček za intimne obrede in spominske slovesnosti.</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">50€</div>
+                                        <button class="product-btn" onclick="glaam.addToCart(203)">
+                                            <i class="fas fa-shopping-bag"></i> <span data-i18n="products.addToCart">Dodaj v košarico</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ikebane Section -->
+                    <div class="funeral-category">
+                    <h3 class="category-title" data-i18n="funeral.ikebana">Ikebane</h3>
+                        <div class="products-grid">
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-title" data-i18n="funeral.products.ikebanaTraditional">Tradicionalna ikebana</h4>
+                                    <p class="product-description" data-i18n="funeral.products.ikebanaTraditionalDesc">Elegantni japonski aranžma za miren in dostojanstven spomin.</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">60€</div>
+                                        <button class="product-btn" onclick="glaam.addToCart(204)">
+                                            <i class="fas fa-shopping-bag"></i> <span data-i18n="products.addToCart">Dodaj v košarico</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-title" data-i18n="funeral.products.ikebanaModern">Moderni ikebana</h4>
+                                    <p class="product-description" data-i18n="funeral.products.ikebanaModernDesc">Sodobna interpretacija tradicionalne japonske umetnosti.</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">85€</div>
+                                        <button class="product-btn" onclick="glaam.addToCart(205)">
+                                            <i class="fas fa-shopping-bag"></i> <span data-i18n="products.addToCart">Dodaj v košarico</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-title" data-i18n="funeral.products.ikebanaMini">Mini ikebana</h4>
+                                    <p class="product-description" data-i18n="funeral.products.ikebanaMiniDesc">Majhen, a izrazit aranžma za osebne spominske trenutke.</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">40€</div>
+                                        <button class="product-btn" onclick="glaam.addToCart(206)">
+                                            <i class="fas fa-shopping-bag"></i> <span data-i18n="products.addToCart">Dodaj v košarico</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Srčni Aranžmaji Section -->
+                    <div class="funeral-category">
+                    <h3 class="category-title" data-i18n="funeral.hearts">Srčni Aranžmaji</h3>
+                        <div class="products-grid">
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-title" data-i18n="funeral.products.heartClassic">Klasično srce</h4>
+                                    <p class="product-description" data-i18n="funeral.products.heartClassicDesc">Personalizirani aranžma v obliki srca za izražanje ljubezni in spomina.</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">95€</div>
+                                        <button class="product-btn" onclick="glaam.addToCart(207)">
+                                            <i class="fas fa-shopping-bag"></i> <span data-i18n="products.addToCart">Dodaj v košarico</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-title" data-i18n="funeral.products.heartLarge">Veliko srce</h4>
+                                    <p class="product-description" data-i18n="funeral.products.heartLargeDesc">Impozanten srčni aranžma za posebne spominske slovesnosti.</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">150€</div>
+                                        <button class="product-btn" onclick="glaam.addToCart(208)">
+                                            <i class="fas fa-shopping-bag"></i> <span data-i18n="products.addToCart">Dodaj v košarico</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-title" data-i18n="funeral.products.heartDouble">Dvojno srce</h4>
+                                    <p class="product-description" data-i18n="funeral.products.heartDoubleDesc">Elegantni aranžma z dvema srcama za izražanje globoke ljubezni.</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">180€</div>
+                                        <button class="product-btn" onclick="glaam.addToCart(209)">
+                                            <i class="fas fa-shopping-bag"></i> <span data-i18n="products.addToCart">Dodaj v košarico</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form for Funeral Services -->
+                <div class="contact-form-section">
+                    <h3 data-i18n="funeral.contact.title">Povprašajte za ponudbo</h3>
+                    <form id="funeralForm" class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="funeralName" name="name" required>
+                                <label for="funeralName" data-i18n="funeral.contact.name">Vaše ime</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="funeralEmail" name="email" required>
+                                <label for="funeralEmail" data-i18n="funeral.contact.email">Email naslov</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="date" id="funeralDate" name="funeralDate" required>
+                                <label for="funeralDate" data-i18n="funeral.contact.date">Datum slovesnosti</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="funeralLocation" name="location" required>
+                                <label for="funeralLocation" data-i18n="funeral.contact.location">Lokacija slovesnosti</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <textarea id="funeralMessage" name="message" rows="4" required></textarea>
+                            <label for="funeralMessage" data-i18n="funeral.contact.message">Opišite vaše želje in potrebe...</label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <span data-i18n="funeral.contact.submit">Pošljite povpraševanje</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <i class="fas fa-seedling"></i>
+                        <span>Glaam</span>
+                    </div>
+                    <p data-i18n="footer.description">Vaš partner za najlepše cvetne aranžmaje in nezabravne trenutke.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 data-i18n="footer.contact">Kontakt</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span data-i18n="footer.address">Trubarjeva 1, Ljubljana</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span data-i18n="footer.phone">01 123 4567</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span data-i18n="footer.email">info@bloom.si</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 data-i18n="footer.hours">Delovni Čas</h4>
+                    <div class="schedule">
+                        <div class="schedule-item" data-i18n="footer.weekdays">Pon - Pet: 8:00 - 19:00</div>
+                        <div class="schedule-item" data-i18n="footer.saturday">Sobota: 8:00 - 16:00</div>
+                        <div class="schedule-item" data-i18n="footer.sunday">Nedelja: 9:00 - 14:00</div>
+                    </div>
+                </div>
+                
+
+            </div>
+            
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">&copy; 2024 Glaam. Vse pravice pridržane.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <i class="notification-icon"></i>
+            <span class="notification-message"></span>
+        </div>
+    </div>
+
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- i18next Library -->
+    <script src="https://cdn.jsdelivr.net/npm/i18next@23.7.6/i18next.min.js"></script>
+    
+    <script>
+        console.log('HTML se je naložil!');
+        
+        // Supabase configuration (Environment variables for Vercel)
+        window.SUPABASE_URL = "https://vukuctwzikgdvhhtfrsi.supabase.co";
+        window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1a3VjdHd6aWtnZHZoaHRmcnNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3Nzc3NTcsImV4cCI6MjA3NTM1Mzc1N30.PWbKaeCCWIv1VRDBNURx0IdeRlJF3oFfmxz1aPjtUgA";
+        
+        // Initialize Supabase client
+        window.supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+        
+        console.log('Supabase inicializiran');
+    </script>
+    
+    <!-- Package Accordion Script -->
+    <script>
+        function togglePackageCard(element) {
+            const card = element.closest('.package-card');
+            const wasExpanded = card.classList.contains('expanded');
+            
+            // Close all other cards
+            document.querySelectorAll('.package-card.expanded').forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('expanded');
+                }
+            });
+            
+            // Toggle current card
+            if (wasExpanded) {
+                card.classList.remove('expanded');
+            } else {
+                card.classList.add('expanded');
+            }
+        }
+
+        // Prevent button clicks from toggling card
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.package-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            });
+        });
+    </script>
+
+    <!-- Cart Manager -->
+    <script src="cart-manager.js"></script>
+    
+    <script src="script.js?v=2024-10-14-mobile-fix"></script>
+</body>
+</html>
