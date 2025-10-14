@@ -844,6 +844,7 @@ button:focus-visible {
 }
 
 /* Responsive Design */
+/* NUCLEAR CSS BUST - Mobile 2 columns fix */
 @media (max-width: 768px) {
     .cart-container {
         width: 95%;
