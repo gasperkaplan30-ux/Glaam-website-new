@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18">
+  <rect width="24" height="18" fill="#ed1c24"/>
+  <rect width="24" height="12" fill="#005eb8"/>
+  <rect width="24" height="6" fill="#ffffff"/>
+  <!-- simplified coat of arms as blue shield with white mountain -->
+  <g transform="translate(3,1)">
+    <path d="M0,0 h6 v5 c0,2.5 -3,4 -3,4 s-3,-1.5 -3,-4 z" fill="#005eb8" stroke="#ed1c24" stroke-width="0.3"/>
+    <path d="M1.2,4.5 l1.3,-1.8 l1.0,1.4 l1.0,-1.4 l1.3,1.8" fill="none" stroke="#ffffff" stroke-width="0.5"/>
+  </g>
+</svg>
+
+
