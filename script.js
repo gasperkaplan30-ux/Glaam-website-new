@@ -1460,16 +1460,8 @@ class GlaamWebsite {
 
     // Navigation
     initNavigation() {
-        // Set initial page to bouquets (Šopki)
-        this.showPage('sopki');
-        // Ensure default filter is applied
-        setTimeout(() => {
-            try {
-                this.applyFilter('romantic');
-            } catch (e) {
-                console.warn('applyFilter failed initially:', e);
-            }
-        }, 0);
+        // Set initial page to home (Domov)
+        this.showPage('domov');
         
         // Handle browser back/forward
         window.addEventListener('popstate', (e) => {
