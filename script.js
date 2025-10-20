@@ -682,42 +682,6 @@ class GlaamWebsite {
                 color: 'from-green-200 to-blue-200'
             },
             {
-                id: 43,
-                name: 'Pomladni Klasični',
-                description: 'Klasični pomladni cvetovi.',
-                price: 39,
-                category: 'seasonal',
-                icon: 'fas fa-seedling',
-                color: 'from-green-200 to-yellow-200'
-            },
-            {
-                id: 44,
-                name: 'Poletni Svetli',
-                description: 'Svetli poletni cvetovi.',
-                price: 44,
-                category: 'seasonal',
-                icon: 'fas fa-sun',
-                color: 'from-yellow-200 to-orange-200'
-            },
-            {
-                id: 45,
-                name: 'Jesenski Topli',
-                description: 'Topli jesenski odtenki.',
-                price: 41,
-                category: 'seasonal',
-                icon: 'fas fa-leaf',
-                color: 'from-orange-200 to-red-200'
-            },
-            {
-                id: 46,
-                name: 'Zimski Hladni',
-                description: 'Hladni zimski odtenki.',
-                price: 46,
-                category: 'seasonal',
-                icon: 'fas fa-snowflake',
-                color: 'from-blue-200 to-purple-200'
-            },
-            {
                 id: 47,
                 name: 'Naravni Divji',
                 description: 'Divji naravni cvetovi.',
