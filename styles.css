@@ -3308,8 +3308,17 @@ a {
     /* Mobile: 2 product tiles per row */
     .products-grid {
         grid-template-columns: repeat(2, 1fr) !important;
-        gap: 1rem;
-        padding: 0 0.5rem;
+        gap: 1.25rem;
+        padding: 0 0.75rem;
+    }
+
+    /* Force 2 columns on mobile even when desktop ID rules set 3 */
+    #sopki .products-grid,
+    #poroka .products-grid,
+    #zalni .products-grid,
+    #zalni .funeral-category .products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.25rem !important;
     }
     
     /* Custom grid also 2 columns on mobile */
@@ -3459,6 +3468,21 @@ a {
     
     .checkout-form {
         padding: 1.5rem;
+    }
+}
+
+/* Very small phones: fall back to a single column to avoid squished cards */
+@media (max-width: 360px) {
+    .products-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+    #sopki .products-grid,
+    #poroka .products-grid,
+    #zalni .products-grid,
+    #zalni .funeral-category .products-grid {
+        grid-template-columns: 1fr !important;
     }
 }
 
