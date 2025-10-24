@@ -1019,33 +1019,6 @@
     <script src="cart-manager.js"></script>
     
     <script src="script.js?v=cursor-2210"></script>
-    <script>
-        // OPTION 1: Expandable cards logic (mobile only)
-        // - Only one card expanded at a time
-        // - Tap outside closes all
-        (function () {
-            function getCards() {
-                return Array.from(document.querySelectorAll('#sopki .product-card, #poroka .product-card, #zalni .product-card'));
-            }
-            function collapseAll(except) {
-                getCards().forEach(card => { if (card !== except) card.classList.remove('expanded'); });
-            }
-            document.addEventListener('click', function(e) {
-                if (!window.matchMedia('(max-width: 768px)').matches) return;
-                const card = e.target.closest('.product-card');
-                const inScope = e.target.closest('#sopki, #poroka, #zalni');
-                if (card && inScope) {
-                    if (card.classList.contains('expanded')) {
-                        card.classList.remove('expanded');
-                    } else {
-                        collapseAll(card);
-                        card.classList.add('expanded');
-                    }
-                } else {
-                    collapseAll();
-                }
-            }, { passive: true });
-        })();
-    </script>
+    <!-- Option A (expandable) disabled: no mobile expand JS included -->
 </body>
 </html>
