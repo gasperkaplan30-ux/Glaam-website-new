@@ -789,6 +789,7 @@ button:focus-visible {
 /* Responsive Design */
 /* NUCLEAR CSS BUST - Mobile 2 columns fix */
 @media (max-width: 768px) {
+    html { -webkit-text-size-adjust: 100%; }
     .cart-container {
         width: 95%;
         max-height: 90vh;
@@ -2047,29 +2048,25 @@ a {
     border-color: transparent;
 }
 
-/* Products Grid - 3 cards per row */
-.products-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: var(--space-2xl);
-    max-width: 1400px;
-    margin: 0 auto;
-    align-items: stretch;
-}
+/* Products Grid - 3 cards per row (DESKTOP ONLY) */
+@media (min-width: 769px) {
+    .products-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: var(--space-2xl);
+        max-width: 1400px;
+        margin: 0 auto;
+        align-items: stretch;
+        grid-auto-rows: 580px !important;
+    }
 
-/* Override any other grid settings */
-#sopki .products-grid,
-#poroka .products-grid,
-#zalni-program .products-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-}
-
-/* Force 3 columns for all product grids */
-.products-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    grid-auto-rows: 580px !important;
+    /* Override any other grid settings */
+    #sopki .products-grid,
+    #poroka .products-grid,
+    #zalni-program .products-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
 }
 /* Žalni program: keep same card proportions (top half image, bottom half info) */
 #zalni .funeral-category .product-card {
@@ -4083,12 +4080,15 @@ button:focus,
     border: 2px solid var(--primary-pink);
 }
 
-/* Improved Product Grid Symmetry */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--space-md);
-    align-items: start;
+/* Improved Product Grid Symmetry
+   Desktop-only to avoid fighting mobile 2-col rules */
+@media (min-width: 769px) {
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--space-md);
+        align-items: start;
+    }
 }
 
 
