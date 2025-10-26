@@ -4208,3 +4208,58 @@ button:disabled {
         padding: 0 0.5rem !important;
     }
 }
+
+/* =========================================================
+   OPTION B (Mobile only): Collapsed cards that expand on tap
+   - Works across all product grids (.products-grid)
+   - Keeps icon/title/price visible; hides description/quantity/CTA
+   - Uses class .is-expanded toggled by JS
+   ========================================================= */
+@media (max-width: 768px) {
+    .products-grid .product-card {
+        position: relative;
+        cursor: pointer;
+        transition: box-shadow 0.28s ease, transform 0.28s ease;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+
+    /* Collapsed by default */
+    .products-grid .product-card .product-description,
+    .products-grid .product-card .product-quantity,
+    .products-grid .product-card .product-btn,
+    .products-grid .product-card .add-btn,
+    .products-grid .product-card .product-footer {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        pointer-events: none;
+        transition: max-height 0.32s ease, opacity 0.24s ease;
+    }
+
+    /* Keep title and price visible in compact mode */
+    .products-grid .product-card .product-title,
+    .products-grid .product-card h3 { /* support both title variants */
+        margin-top: 0.25rem;
+        margin-bottom: 0.35rem;
+    }
+    .products-grid .product-card .product-price,
+    .products-grid .product-card .price { /* support both price variants */
+        font-weight: 700;
+    }
+
+    /* Expanded state */
+    .products-grid .product-card.is-expanded {
+        box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+        transform: translateY(-2px);
+    }
+    .products-grid .product-card.is-expanded .product-description,
+    .products-grid .product-card.is-expanded .product-quantity,
+    .products-grid .product-card.is-expanded .product-btn,
+    .products-grid .product-card.is-expanded .add-btn,
+    .products-grid .product-card.is-expanded .product-footer {
+        max-height: 520px; /* sufficiently large */
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
