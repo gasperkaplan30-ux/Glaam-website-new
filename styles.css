@@ -1123,6 +1123,15 @@ a {
     padding-left: var(--space-xl);
 }
 
+/* Dropdown inline description under each item */
+.dropdown-desc {
+    padding: 6px 16px 10px 16px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--gray-100);
+}
+.dropdown-desc:last-child { border-bottom: none; }
+
 .nav-actions {
     display: flex;
     align-items: center;
@@ -4176,26 +4185,32 @@ button:disabled {
 /* ===== MOBILE HOTFIX (LAST WORD) ===== */
 /* Ensure consistent 2-column layout on phones and avoid flattened cards */
 @media (max-width: 768px) {
-    .products-grid,
-    #sopki .products-grid,
+    /* Šopki: 2 v vrsti */
+    #sopki .products-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 1.5rem !important;
+        padding: 0 0.75rem !important;
+    }
+    /* Poroka in Žalni program: 1 v vrsti */
     #poroka .products-grid,
     #zalni .products-grid,
     #zalni .funeral-category .products-grid {
         display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 1.5rem !important;
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem !important;
         padding: 0 0.75rem !important;
     }
 
     /* Avoid overly tall/flattened cards */
     .product-card { height: auto !important; }
 
-    .product-image {
+    #sopki .product-image {
         aspect-ratio: 4 / 3;
         height: auto !important;
         overflow: hidden;
     }
-    .product-image img {
+    #sopki .product-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -4203,7 +4218,7 @@ button:disabled {
 }
 
 @media (max-width: 360px) {
-    .products-grid,
+    /* Vsi: 1 stolpec na zelo majhnih ekranih */
     #sopki .products-grid,
     #poroka .products-grid,
     #zalni .products-grid,

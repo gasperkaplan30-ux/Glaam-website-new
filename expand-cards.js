@@ -47,7 +47,7 @@
   }
 
   function enhanceCards(){
-    document.querySelectorAll('.products-grid .product-card').forEach(card => {
+    document.querySelectorAll('#sopki .products-grid .product-card').forEach(card => {
       if (!card.hasAttribute('tabindex')) card.setAttribute('tabindex','0');
       card.setAttribute('role','button');
       card.setAttribute('aria-expanded','false');
@@ -56,8 +56,10 @@
 
   function init(){
     enhanceCards();
-    // Delegate on container level to catch dynamic content
-    document.addEventListener('click', onGridClick, { passive: true });
+    // Delegate only within #sopki to avoid affecting Poroka/Zalni
+    document.querySelectorAll('#sopki').forEach(scope => {
+      scope.addEventListener('click', onGridClick, { passive: true });
+    });
     document.addEventListener('click', onDocClick,  { passive: true });
     document.addEventListener('keydown', onKey);
     window.addEventListener('resize', ()=>{ if (!isMobile()) closeOpen(); });
