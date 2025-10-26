@@ -988,6 +988,11 @@ a {
     transition: all var(--transition-medium);
 }
 
+/* Ensure dropdown menus are visible above decorations and not clipped */
+.navbar { overflow: visible; }
+.dropdown { position: relative; }
+.dropdown-menu { z-index: 2000; }
+
 .navbar.scrolled {
     padding: var(--space-md) 0;
     background: rgba(255, 255, 255, 0.98);

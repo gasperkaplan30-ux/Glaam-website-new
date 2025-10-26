@@ -1114,21 +1114,29 @@ class GlaamWebsite {
             });
         }
         
-        // Dropdown menu toggle for mobile
+        // Dropdown menu toggle (mobile + desktop): keep open when clicking inside menu
         document.addEventListener('click', (e) => {
-            const dropdown = e.target.closest('.dropdown');
-            const dropdownMenu = e.target.closest('.dropdown-menu');
-            
-            // Close all dropdowns first
-            document.querySelectorAll('.dropdown').forEach(dd => {
-                dd.classList.remove('active');
-            });
-            
-            // If clicking on dropdown trigger, toggle it
-            if (dropdown && !dropdownMenu) {
+            const rootDropdown = e.target.closest('.dropdown');
+            const isTrigger = e.target.closest('.dropdown > a, .dropdown > button, .dropdown > .nav-link');
+            const inMenu = !!e.target.closest('.dropdown-menu');
+
+            // If clicking a trigger, toggle only that dropdown
+            if (isTrigger && rootDropdown) {
                 e.preventDefault();
-                dropdown.classList.toggle('active');
+                const wasActive = rootDropdown.classList.contains('active');
+                document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
+                if (!wasActive) rootDropdown.classList.add('active');
+                return;
             }
+
+            // If clicking inside an open menu, keep it open
+            if (inMenu && rootDropdown) {
+                rootDropdown.classList.add('active');
+                return;
+            }
+
+            // Otherwise, close all dropdowns
+            document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('active'));
         });
 
         // Close mobile menu on link click
