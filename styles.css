@@ -1131,7 +1131,19 @@ a {
 
 /* Smoother dropdown reveal */
 .dropdown-menu {
-    transition: opacity 0.22s ease, transform 0.22s ease;
+    /* smoother entrance */
+    will-change: transform, opacity;
+    transition: transform 180ms cubic-bezier(.22,.61,.36,1), opacity 160ms ease-out;
+    transform-origin: top left;
+    transform: translateY(8px) scale(0.98);
+    opacity: 0;
+    pointer-events: none;
+}
+.dropdown:hover .dropdown-menu,
+.dropdown.active .dropdown-menu {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* Dropdown inline description under each item */
@@ -2173,6 +2185,10 @@ a {
     flex-direction: column;
 }
 
+/* Remove tap blue highlight on mobile and default focus ring */
+.product-card { -webkit-tap-highlight-color: transparent; }
+.product-card:focus, .product-card:active { outline: none; box-shadow: none; }
+
 .product-card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: var(--shadow-2xl);
@@ -2249,14 +2265,14 @@ a {
 
 .product-footer {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr auto; /* button left, price right */
     align-items: center;
     margin-top: auto;
     padding: 1rem 1.1rem;
     background: linear-gradient(180deg, rgba(255,255,255,0.90) 0%, rgba(255,255,255,0.96) 100%);
     border-radius: 14px;
     border: 1px solid rgba(214, 51, 132, 0.12);
-    gap: 1rem;
+    gap: 0.75rem;
     min-height: 80px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     backdrop-filter: saturate(140%) blur(2px);
@@ -2276,6 +2292,7 @@ a {
     align-items: center;
     justify-content: center;
     white-space: nowrap;
+    margin-left: auto; /* align to right for symmetry */
 }
 
 .product-btn {
