@@ -4194,6 +4194,7 @@ button:disabled {
     }
     /* Poroka in Žalni program: 1 v vrsti */
     #poroka .products-grid,
+    #poroka .packages-grid,
     #zalni .products-grid,
     #zalni .funeral-category .products-grid {
         display: grid !important;
@@ -4201,6 +4202,9 @@ button:disabled {
         gap: 1.25rem !important;
         padding: 0 0.75rem !important;
     }
+
+    /* Poroka: kartice naj se raztezajo čez celotno širino */
+    #poroka .package-card { width: 100% !important; }
 
     /* Avoid overly tall/flattened cards */
     .product-card { height: auto !important; }
