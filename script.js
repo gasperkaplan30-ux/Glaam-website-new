@@ -1759,10 +1759,15 @@ renderWeddingPackages() {
             }
         }
 
-        // Show/hide custom size buttons based on filter
+        // Show/hide custom size buttons based on filter and clear previous selection
         const customSizeButtons = document.getElementById('customSizeButtons');
         if (customSizeButtons) {
-            customSizeButtons.style.display = filter === 'custom' ? 'flex' : 'none';
+            const isCustom = filter === 'custom';
+            customSizeButtons.style.display = isCustom ? 'flex' : 'none';
+            if (isCustom) {
+                customSizeButtons.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+                this.customBouquetMaxItems = undefined;
+            }
         }
 
         // Render products with filter
