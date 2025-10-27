@@ -2324,7 +2324,7 @@ a {
         gap: 0.5rem;
     }
     .product-btn {
-        width: 100%;
+        width: min(280px, 90%);
     }
     
     /* Better mobile spacing for product cards */
@@ -3425,7 +3425,7 @@ a {
     }
     
     .product-btn span {
-        display: none;
+        display: inline;
     }
     
     .product-footer {
@@ -3675,7 +3675,7 @@ a {
     }
     
     .product-btn span {
-        display: none;
+        display: inline;
     }
     
     /* Filter buttons */
