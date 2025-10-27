@@ -1227,6 +1227,12 @@ class GlaamWebsite {
             }
         });
 
+        // Ensure custom tab starts with no selection
+        const customButtons = document.getElementById('customSizeButtons');
+        if (customButtons) {
+            customButtons.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
         // Add click outside to close cart
         document.addEventListener('click', (e) => {
             const cart = document.getElementById('simpleCart');

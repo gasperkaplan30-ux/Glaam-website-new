@@ -1147,13 +1147,7 @@ a {
 }
 
 /* Dropdown inline description under each item */
-.dropdown-desc {
-    padding: 6px 16px 10px 16px;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    border-bottom: 1px solid var(--gray-100);
-}
-.dropdown-desc:last-child { border-bottom: none; }
+/* Removed dropdown-desc (no inline descriptions) */
 
 .nav-actions {
     display: flex;
