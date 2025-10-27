@@ -2262,20 +2262,20 @@ a {
 }
 
 .product-footer {
-    display: grid;
-    grid-template-columns: 1fr; /* stack and center */
-    justify-items: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     margin-top: auto;
-    padding: 1rem 1.1rem;
+    padding: 0.9rem 1rem;
     background: linear-gradient(180deg, rgba(255,255,255,0.90) 0%, rgba(255,255,255,0.96) 100%);
     border-radius: 14px;
     border: 1px solid rgba(214, 51, 132, 0.12);
     gap: 0.6rem;
-    min-height: 80px;
+    min-height: 88px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     backdrop-filter: saturate(140%) blur(2px);
-    margin-bottom: 8px; /* align with custom-grid footer spacing */
+    margin-bottom: 0; /* keep within tile background */
 }
 
 .product-price {
@@ -2304,9 +2304,9 @@ a {
     font-size: 0.9rem;
     cursor: pointer;
     transition: all var(--transition-medium);
-    width: auto; /* center width */
+    width: min(280px, 90%);
     max-width: 100%;
-    justify-self: center;
+    align-self: center;
     display: inline-flex;
     align-items: center;
     justify-content: center;
