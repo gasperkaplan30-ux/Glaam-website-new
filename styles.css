@@ -2367,6 +2367,29 @@ a {
     background: linear-gradient(135deg, #c41e6b, #157347);
 }
 
+/* Emphasize category headings in Žalni program */
+#zalni .category-title {
+    font-size: clamp(2rem, 4.5vw, 2.4rem) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px;
+    margin-bottom: 1.75rem;
+}
+#zalni .category-title::after {
+    width: 90px !important;
+    height: 4px !important;
+}
+
+@media (max-width: 768px) {
+    #zalni .category-title {
+        font-size: clamp(1.6rem, 5.5vw, 1.9rem) !important;
+        margin-bottom: 1.25rem;
+    }
+    #zalni .category-title::after {
+        width: 72px !important;
+        height: 3px !important;
+    }
+}
+
 /* Wedding Section */
 .wedding-content {
     margin-bottom: var(--space-3xl);
