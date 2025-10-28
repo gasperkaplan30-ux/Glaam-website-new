@@ -2314,7 +2314,10 @@ a {
     box-shadow: 0 4px 12px rgba(25, 135, 84, 0.25);
     text-transform: none;
     letter-spacing: 0.3px;
+    box-sizing: border-box;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Mobile stacking for footer */
@@ -3665,12 +3668,14 @@ a {
     }
     
     .product-btn {
-        font-size: 0.7rem;
-        padding: 0.5rem 1rem;
+        font-size: 0.65rem;
+        padding: 0.55rem 1rem;
         white-space: normal;
-        overflow: visible;
-        text-overflow: clip;
-        min-width: 140px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        min-width: 150px;
+        box-sizing: border-box;
     }
     
     /* Mobile-only: Show icon and text compact */
