@@ -1752,7 +1752,7 @@ class GlaamWebsite {
                     <div class="product-footer">
                         <span class="product-price">${product.price}€</span>
                         <button class="product-btn" onclick="event.stopPropagation(); ${isCustomMode ? `glaam.addFlowerToCustomBouquet(${product.id})` : `glaam.addToCart(${product.id})`}">
-                            <i class="fas fa-shopping-bag"></i> ${typeof i18next !== 'undefined' ? i18next.t('products.addToCart') : 'Dodaj v košarico'}
+                            ${typeof i18next !== 'undefined' ? i18next.t('products.addToCart') : 'Dodaj v košarico'}
                         </button>
                     </div>
                 </div>
