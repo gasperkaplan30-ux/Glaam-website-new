@@ -3665,17 +3665,24 @@ a {
     }
     
     .product-btn {
-        font-size: 0.85rem;
-        padding: 0.6rem 0.9rem;
+        font-size: 0.7rem;
+        padding: 0.5rem 0.8rem;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
     }
     
-    /* Mobile-only: Hide text, show only icon */
+    /* Mobile-only: Show icon and text compact */
     .product-btn .fas {
-        margin-right: 0;
+        margin-right: 0.25rem;
+        flex-shrink: 0;
+        font-size: 0.8em;
     }
     
     .product-btn span {
         display: inline;
+        overflow: visible;
+        text-overflow: clip;
     }
     
     /* Filter buttons */
@@ -3855,7 +3862,8 @@ a {
 }
 
 button:focus,
-.btn:focus {
+.btn:focus,
+.product-card:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(248, 181, 183, 0.5);
 }
