@@ -84,6 +84,21 @@ class GlaamWebsite {
             326: { name: 'products.custom.ruscus' },
             327: { name: 'products.custom.asparagusFern' }
         };
+        // Map funeral product ids to i18n keys for names and descriptions
+        this.funeralTranslationMap = {
+            // Venčki
+            201: { name: 'funeral.products.classicWreath', desc: 'funeral.products.classicWreathDesc' },
+            202: { name: 'funeral.products.luxuryWreath', desc: 'funeral.products.luxuryWreathDesc' },
+            203: { name: 'funeral.products.smallWreath', desc: 'funeral.products.smallWreathDesc' },
+            // Ikebane
+            204: { name: 'funeral.products.ikebanaTraditional', desc: 'funeral.products.ikebanaTraditionalDesc' },
+            205: { name: 'funeral.products.ikebanaModern', desc: 'funeral.products.ikebanaModernDesc' },
+            206: { name: 'funeral.products.ikebanaMini', desc: 'funeral.products.ikebanaMiniDesc' },
+            // Srčni Aranžmaji
+            207: { name: 'funeral.products.heartClassic', desc: 'funeral.products.heartClassicDesc' },
+            208: { name: 'funeral.products.heartLarge', desc: 'funeral.products.heartLargeDesc' },
+            209: { name: 'funeral.products.heartDouble', desc: 'funeral.products.heartDoubleDesc' }
+        };
         this.funeralProducts = this.initFuneralProducts();
         this.observers = new Map();
         this.customBouquetMaxItems = 5; // Default to 5 items
@@ -312,19 +327,37 @@ class GlaamWebsite {
     }
 
     getTranslatedName(product) {
-        if (typeof i18next !== 'undefined' && this.productTranslationMap[product.id]?.name) {
-            const key = this.productTranslationMap[product.id].name;
-            const t = i18next.t(key);
-            if (t && t !== key) return t;
+        if (typeof i18next !== 'undefined') {
+            // Check funeral products first
+            if (this.funeralTranslationMap && this.funeralTranslationMap[product.id]?.name) {
+                const key = this.funeralTranslationMap[product.id].name;
+                const t = i18next.t(key);
+                if (t && t !== key) return t;
+            }
+            // Then check regular products
+            if (this.productTranslationMap && this.productTranslationMap[product.id]?.name) {
+                const key = this.productTranslationMap[product.id].name;
+                const t = i18next.t(key);
+                if (t && t !== key) return t;
+            }
         }
         return product.name;
     }
 
     getTranslatedDesc(product) {
-        if (typeof i18next !== 'undefined' && this.productTranslationMap[product.id]?.desc) {
-            const key = this.productTranslationMap[product.id].desc;
-            const t = i18next.t(key);
-            if (t && t !== key) return t;
+        if (typeof i18next !== 'undefined') {
+            // Check funeral products first
+            if (this.funeralTranslationMap && this.funeralTranslationMap[product.id]?.desc) {
+                const key = this.funeralTranslationMap[product.id].desc;
+                const t = i18next.t(key);
+                if (t && t !== key) return t;
+            }
+            // Then check regular products
+            if (this.productTranslationMap && this.productTranslationMap[product.id]?.desc) {
+                const key = this.productTranslationMap[product.id].desc;
+                const t = i18next.t(key);
+                if (t && t !== key) return t;
+            }
         }
         return product.description || '';
     }
