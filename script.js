@@ -2002,6 +2002,11 @@ renderWeddingPackages() {
             loginModal.classList.add('show');
             loginOverlay.classList.add('show');
             document.body.style.overflow = 'hidden';
+            
+            // Update translations for login modal
+            if (typeof i18next !== 'undefined') {
+                i18next.updatePage();
+            }
         }
     }
 
@@ -2161,6 +2166,11 @@ renderWeddingPackages() {
             registrationModal.classList.add('show');
             loginOverlay.classList.add('show');
             document.body.style.overflow = 'hidden';
+            
+            // Update translations for registration modal
+            if (typeof i18next !== 'undefined') {
+                i18next.updatePage();
+            }
         }
     }
 
@@ -2471,6 +2481,11 @@ renderWeddingPackages() {
             forgotPasswordModal.classList.add('show');
             loginOverlay.classList.add('show');
             document.body.style.overflow = 'hidden';
+            
+            // Update translations for forgot password modal
+            if (typeof i18next !== 'undefined') {
+                i18next.updatePage();
+            }
         }
     }
 
@@ -3564,11 +3579,13 @@ function showCart() {
         
         if (cartContent) {
             if (!window.glaam || !window.glaam.cart || window.glaam.cart.length === 0) {
+                const emptyText = typeof i18next !== 'undefined' ? i18next.t('cart.empty') : 'Vaša košarica je prazna';
+                const emptySubtitleText = typeof i18next !== 'undefined' ? i18next.t('cart.emptySubtitle') : 'Dodajte izdelke, da začnete z nakupom';
                 cartContent.innerHTML = `
                     <div class="empty-cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <p>Vaša košarica je prazna</p>
-                        <span>Dodajte izdelke, da začnete z nakupom</span>
+                        <p data-i18n="cart.empty">${emptyText}</p>
+                        <span data-i18n="cart.emptySubtitle">${emptySubtitleText}</span>
                     </div>
                 `;
             } else {
