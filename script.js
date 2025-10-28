@@ -274,6 +274,9 @@ class GlaamWebsite {
         if (typeof i18next !== 'undefined') {
             i18next.changeLanguage(language).then(() => {
                 console.log(`Language changed to: ${language}`);
+                // Force update all translations including funeral products
+                this.applyTranslations();
+                this.updateFuneralProducts();
                 // Immediately reload the page to ensure all translations are applied
                 window.location.reload();
             });
