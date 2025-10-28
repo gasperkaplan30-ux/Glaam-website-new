@@ -224,7 +224,7 @@
     <div id="orderModal" class="login-modal">
         <div class="login-content order-content">
             <div class="login-header">
-                <h3>Podatki za dostavo</h3>
+                <h3 data-i18n="forms.order.title">Podatki za dostavo</h3>
                 <button id="closeOrder" class="close-login">
                     <i class="fas fa-times"></i>
                 </button>
@@ -233,43 +233,43 @@
                 <div class="form-row">
                     <div class="form-group">
                         <input type="text" id="orderFirstName" name="firstName" required>
-                        <label for="orderFirstName">Ime</label>
+                        <label for="orderFirstName" data-i18n="forms.order.firstName">Ime</label>
                     </div>
                     <div class="form-group">
                         <input type="text" id="orderLastName" name="lastName" required>
-                        <label for="orderLastName">Priimek</label>
+                        <label for="orderLastName" data-i18n="forms.order.lastName">Priimek</label>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <input type="text" id="orderAddress" name="address" required>
-                    <label for="orderAddress">Naslov (ulica in hišna številka)</label>
+                    <label for="orderAddress" data-i18n="forms.order.address">Naslov (ulica in hišna številka)</label>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <input type="text" id="orderPostalCode" name="postalCode" required pattern="[0-9]{4}">
-                        <label for="orderPostalCode">Poštna številka</label>
+                        <label for="orderPostalCode" data-i18n="forms.order.postalCode">Poštna številka</label>
                     </div>
                     <div class="form-group">
                         <input type="text" id="orderCity" name="city" required>
-                        <label for="orderCity">Mesto</label>
+                        <label for="orderCity" data-i18n="forms.order.city">Mesto</label>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <input type="text" id="orderCountry" name="country" required value="Slovenija">
-                    <label for="orderCountry">Država</label>
+                    <label for="orderCountry" data-i18n="forms.order.country">Država</label>
                 </div>
                 
                 <div class="form-group">
                     <input type="tel" id="orderPhone" name="phone" required>
-                    <label for="orderPhone">Telefon</label>
+                    <label for="orderPhone" data-i18n="forms.order.phone">Telefon</label>
                 </div>
                 
                 <div class="form-group">
                     <input type="email" id="orderEmail" name="email" required>
-                    <label for="orderEmail">Email naslov</label>
+                    <label for="orderEmail" data-i18n="forms.order.email">Email naslov</label>
                 </div>
                 
                 <div id="orderError" class="error-message" style="display: none; color: #ff4757; font-size: 0.9rem; margin-bottom: 1rem;"></div>
@@ -277,10 +277,10 @@
                 <div class="order-form-actions">
                     <button type="button" class="btn btn-outline" onclick="glaam.hideOrderModal()">
                         <i class="fas fa-arrow-left"></i>
-                        <span>Nazaj v košarico</span>
+                        <span data-i18n="forms.order.backToCart">Nazaj v košarico</span>
                     </button>
                     <button type="submit" class="btn btn-primary">
-                        <span>Nadaljuj na plačilo</span>
+                        <span data-i18n="forms.order.continuePayment">Nadaljuj na plačilo</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>

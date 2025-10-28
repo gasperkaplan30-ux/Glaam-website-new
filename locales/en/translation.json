@@ -345,7 +345,7 @@
       "title": "Delivery Information",
       "firstName": "First name",
       "lastName": "Last name",
-      "address": "Address (street and house number)",
+      "address": "Address (street and number)",
       "postalCode": "Postal code",
       "city": "City",
       "country": "Country",
