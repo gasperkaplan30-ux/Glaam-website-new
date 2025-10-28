@@ -2081,23 +2081,23 @@ a {
 
 /* Products Grid - 3 cards per row (DESKTOP ONLY) */
 @media (min-width: 769px) {
-    .products-grid {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: var(--space-2xl);
-        max-width: 1400px;
-        margin: 0 auto;
-        align-items: stretch;
+.products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: var(--space-2xl);
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: stretch;
         grid-auto-rows: 580px !important;
-    }
+}
 
-    /* Override any other grid settings */
-    #sopki .products-grid,
-    #poroka .products-grid,
-    #zalni-program .products-grid {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-    }
+/* Override any other grid settings */
+#sopki .products-grid,
+#poroka .products-grid,
+#zalni-program .products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+}
 }
 /* Žalni program: keep same card proportions (top half image, bottom half info) */
 #zalni .funeral-category .product-card {
@@ -2314,10 +2314,6 @@ a {
     box-shadow: 0 4px 12px rgba(25, 135, 84, 0.25);
     text-transform: none;
     letter-spacing: 0.3px;
-    box-sizing: border-box;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* Mobile stacking for footer */
@@ -3668,8 +3664,8 @@ a {
     }
     
     .product-btn {
-        font-size: 0.65rem;
-        padding: 0.55rem 1rem;
+        font-size: 0.75rem;
+        padding: 0.6rem 1rem;
         white-space: normal;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -4162,11 +4158,11 @@ button:focus,
 /* Improved Product Grid Symmetry
    Desktop-only to avoid fighting mobile 2-col rules */
 @media (min-width: 769px) {
-    .products-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: var(--space-md);
-        align-items: start;
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-md);
+    align-items: start;
     }
 }
 
