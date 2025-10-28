@@ -132,7 +132,7 @@
     <div id="loginModal" class="login-modal">
         <div class="login-content">
             <div class="login-header">
-                <h3>Prijava</h3>
+                <h3 data-i18n="forms.login.title">Prijava</h3>
                 <button id="closeLogin" class="close-login">
                     <i class="fas fa-times"></i>
                 </button>
@@ -140,20 +140,20 @@
             <form id="loginForm" class="login-form">
                 <div class="form-group">
                     <input type="email" id="loginEmail" name="email" required>
-                    <label for="loginEmail">Email naslov</label>
+                    <label for="loginEmail" data-i18n="forms.login.email">Email naslov</label>
                 </div>
                 <div class="form-group">
                     <input type="password" id="loginPassword" name="password" required>
-                    <label for="loginPassword">Geslo</label>
+                    <label for="loginPassword" data-i18n="forms.login.password">Geslo</label>
                 </div>
                 <button type="submit" class="btn btn-primary">
-                    <span>Prijavi se</span>
+                    <span data-i18n="forms.login.submit">Prijavi se</span>
                     <i class="fas fa-sign-in-alt"></i>
                 </button>
             </form>
             <div class="login-footer">
-                <p>Nimaš računa? <a href="#" id="showRegister">Registriraj se</a></p>
-                <p><a href="#" id="showForgotPassword">Pozabil geslo?</a></p>
+                <p><span data-i18n="forms.login.noAccount">Nimaš računa?</span> <a href="#" id="showRegister"><span data-i18n="forms.login.register">Registriraj se</span></a></p>
+                <p><a href="#" id="showForgotPassword" data-i18n="forms.login.forgotPassword">Pozabil geslo?</a></p>
             </div>
         </div>
     </div>
@@ -162,7 +162,7 @@
     <div id="forgotPasswordModal" class="login-modal">
         <div class="login-content">
             <div class="login-header">
-                <h3>Pozabljeno geslo</h3>
+                <h3 data-i18n="forms.forgotPassword.title">Pozabljeno geslo</h3>
                 <button id="closeForgotPassword" class="close-login">
                     <i class="fas fa-times"></i>
                 </button>
@@ -170,17 +170,17 @@
             <form id="forgotPasswordForm" class="login-form">
                 <div class="form-group">
                     <input type="email" id="forgotEmail" name="email" required>
-                    <label for="forgotEmail">Email naslov</label>
+                    <label for="forgotEmail" data-i18n="forms.forgotPassword.email">Email naslov</label>
                 </div>
                 <div id="forgotPasswordError" class="error-message" style="display: none; color: #ff4757; font-size: 0.9rem; margin-bottom: 1rem;"></div>
                 <div id="forgotPasswordSuccess" class="success-message" style="display: none; color: #4caf50; font-size: 0.9rem; margin-bottom: 1rem;"></div>
                 <button type="submit" class="btn btn-primary">
-                    <span>Pošlji email za ponastavitev</span>
+                    <span data-i18n="forms.forgotPassword.submit">Pošlji email za ponastavitev</span>
                     <i class="fas fa-envelope"></i>
                 </button>
             </form>
             <div class="login-footer">
-                <p><a href="#" id="backToLogin">Nazaj na prijavo</a></p>
+                <p><a href="#" id="backToLogin" data-i18n="forms.forgotPassword.backToLogin">Nazaj na prijavo</a></p>
             </div>
         </div>
     </div>
@@ -189,7 +189,7 @@
     <div id="registrationModal" class="login-modal">
         <div class="login-content">
             <div class="login-header">
-                <h3>Registracija</h3>
+                <h3 data-i18n="forms.register.title">Registracija</h3>
                 <button id="closeRegistration" class="close-login">
                     <i class="fas fa-times"></i>
                 </button>
@@ -197,25 +197,25 @@
             <form id="registrationForm" class="login-form">
                 <div class="form-group">
                     <input type="email" id="registerEmail" name="email" required>
-                    <label for="registerEmail">Email naslov</label>
+                    <label for="registerEmail" data-i18n="forms.register.email">Email naslov</label>
                 </div>
                 <div class="form-group">
                     <input type="password" id="registerPassword" name="password" required minlength="6">
-                    <label for="registerPassword">Geslo (min. 6 znakov)</label>
+                    <label for="registerPassword" data-i18n="forms.register.password">Geslo (min. 6 znakov)</label>
                 </div>
                 <div class="form-group">
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
-                    <label for="confirmPassword">Potrdi geslo</label>
+                    <label for="confirmPassword" data-i18n="forms.register.confirmPassword">Potrdi geslo</label>
                 </div>
                 <div id="passwordError" class="error-message" style="display: none; color: #ff4757; font-size: 0.9rem; margin-bottom: 1rem;"></div>
                 <div id="registrationSuccess" class="success-message" style="display: none; color: #4caf50; font-size: 0.9rem; margin-bottom: 1rem;"></div>
                 <button type="submit" class="btn btn-primary">
-                    <span>Registriraj se</span>
+                    <span data-i18n="forms.register.submit">Registriraj se</span>
                     <i class="fas fa-user-plus"></i>
                 </button>
             </form>
             <div class="login-footer">
-                <p>Že imaš račun? <a href="#" id="showLogin">Prijavi se</a></p>
+                <p><span data-i18n="forms.register.hasAccount">Že imaš račun?</span> <a href="#" id="showLogin"><span data-i18n="forms.register.login">Prijavi se</span></a></p>
             </div>
         </div>
     </div>
