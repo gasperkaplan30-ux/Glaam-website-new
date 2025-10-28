@@ -363,6 +363,7 @@
       "removeFromCart": "removed from cart",
       "quantityIncreased": "quantity increased to",
       "fillAllFields": "Please fill in all fields",
+      "fillThisField": "Please fill in this field",
       "wrongPassword": "Wrong password. Check your password or register if you don't have an account yet.",
       "emailNotConfirmed": "Please confirm your email before logging in.",
       "tooManyRequests": "Too many login attempts. Wait a bit and try again.",

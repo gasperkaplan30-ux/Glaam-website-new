@@ -346,6 +346,7 @@
     "removeFromCart": "odstranjen iz košarice",
     "quantityIncreased": "količina povečana na",
     "fillAllFields": "Prosimo, izpolnite vsa polja",
+    "fillThisField": "Izpolnite to polje",
     "wrongPassword": "Napačno geslo. Preverite geslo ali se registrirajte, če še nimate računa.",
     "emailNotConfirmed": "Prosim potrdite svoj email, preden se prijavite.",
     "tooManyRequests": "Preveč poskusov prijave. Počakajte malo in poskusite znova.",

@@ -387,6 +387,19 @@ class GlaamWebsite {
                 }
             }
         });
+        
+        // Update validation messages for form inputs
+        document.querySelectorAll('[data-i18n-msg]').forEach(input => {
+            const key = input.getAttribute('data-i18n-msg');
+            if (key) {
+                const msg = i18next.t(key);
+                if (msg && msg !== key) {
+                    input.setCustomValidity('');
+                    input.setAttribute('oninvalid', `this.setCustomValidity('${msg}')`);
+                    input.setAttribute('oninput', `this.setCustomValidity('')`);
+                }
+            }
+        });
     }
 
     // Product Data
