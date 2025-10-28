@@ -1389,6 +1389,7 @@ class GlaamWebsite {
         if (backToLogin) {
             backToLogin.addEventListener('click', (e) => {
                 e.preventDefault();
+                this.hideForgotPasswordModal();
                 this.showLoginModal();
             });
         }
@@ -1408,6 +1409,7 @@ class GlaamWebsite {
         if (showLogin) {
             showLogin.addEventListener('click', (e) => {
                 e.preventDefault();
+                this.hideRegistrationModal();
                 this.showLoginModal();
             });
         }
@@ -2040,6 +2042,11 @@ renderWeddingPackages() {
         const loginOverlay = document.getElementById('loginOverlay');
         
         if (loginModal && loginOverlay) {
+            // Close any other modals first
+            this.hideForgotPasswordModal();
+            this.hideRegistrationModal();
+            
+            // Show login modal
             loginModal.classList.add('show');
             loginOverlay.classList.add('show');
             document.body.style.overflow = 'hidden';
@@ -2199,11 +2206,15 @@ renderWeddingPackages() {
 
     // Registration Modal Functions
     showRegistrationModal() {
-        this.hideLoginModal();
         const registrationModal = document.getElementById('registrationModal');
         const loginOverlay = document.getElementById('loginOverlay');
         
         if (registrationModal && loginOverlay) {
+            // Hide other modals first
+            this.hideLoginModal();
+            this.hideForgotPasswordModal();
+            
+            // Show registration modal
             registrationModal.classList.add('show');
             loginOverlay.classList.add('show');
             document.body.style.overflow = 'hidden';
@@ -2513,12 +2524,15 @@ renderWeddingPackages() {
 
     // Forgot Password Modal Functions
     showForgotPasswordModal() {
-        this.hideLoginModal();
-        this.hideRegistrationModal();
         const forgotPasswordModal = document.getElementById('forgotPasswordModal');
         const loginOverlay = document.getElementById('loginOverlay');
         
         if (forgotPasswordModal && loginOverlay) {
+            // Hide login modal first
+            this.hideLoginModal();
+            this.hideRegistrationModal();
+            
+            // Show forgot password modal
             forgotPasswordModal.classList.add('show');
             loginOverlay.classList.add('show');
             document.body.style.overflow = 'hidden';
