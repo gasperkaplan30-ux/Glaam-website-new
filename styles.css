@@ -3497,15 +3497,15 @@ a {
         justify-content: flex-start;
         overflow-x: auto;
         padding: 0.75rem 0.5rem;
-        gap: 0.75rem;
+        gap: 0.5rem;
         -webkit-overflow-scrolling: touch;
     }
     
     .filter-btn {
         white-space: nowrap;
         min-width: auto;
-        font-size: 0.95rem;
-        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
     }
     
     .language-selector {
@@ -3666,10 +3666,11 @@ a {
     
     .product-btn {
         font-size: 0.7rem;
-        padding: 0.5rem 0.8rem;
+        padding: 0.5rem 1rem;
         white-space: normal;
         overflow: visible;
         text-overflow: clip;
+        min-width: 140px;
     }
     
     /* Mobile-only: Show icon and text compact */
