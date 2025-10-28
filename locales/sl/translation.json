@@ -338,7 +338,7 @@
       "continuePayment": "Nadaljuj na plačilo"
     }
   },
-  "notifications": {
+    "notifications": {
     "loginSuccess": "Uspešno ste se prijavili!",
     "logoutSuccess": "Uspešno ste se odjavili!",
     "registerSuccess": "Uspešna registracija! Preverite email za potrditev.",
@@ -355,7 +355,9 @@
     "registrationError": "Napaka pri registraciji:",
     "forgotPasswordError": "Napaka:",
     "enterValidEmail": "Vnesite veljaven email naslov.",
-    "enterEmail": "Prosimo, vnesite email naslov"
+    "enterEmail": "Prosimo, vnesite email naslov",
+    "cartCleared": "Košarica je bila očiščena!",
+    "loginRequired": "Za zaključek nakupa se morate prijaviti!"
   },
   "footer": {
     "description": "Vaš partner za najlepše cvetne aranžmaje in nezabravne trenutke.",

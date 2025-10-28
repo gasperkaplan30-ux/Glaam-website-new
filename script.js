@@ -211,6 +211,8 @@ class GlaamWebsite {
                 this.applyTranslations();
                 this.updateLanguageButtons();
                 this.renderProducts(this.currentProductsFilter || 'romantic');
+                // Force update funeral products as they are static HTML
+                this.updateFuneralProducts();
             });
         } catch (error) {
             console.error('Error loading translations:', error);
@@ -235,6 +237,8 @@ class GlaamWebsite {
                         this.applyTranslations();
                         this.updateLanguageButtons();
                         this.renderProducts(this.currentProductsFilter || 'romantic');
+                        // Force update funeral products as they are static HTML
+                        this.updateFuneralProducts();
                     });
                 }
             } catch (fallbackError) {
@@ -360,6 +364,29 @@ class GlaamWebsite {
             }
         }
         return product.description || '';
+    }
+
+    // Update funeral products translations manually (they are static HTML)
+    updateFuneralProducts() {
+        if (typeof i18next === 'undefined') return;
+        
+        // Update all data-i18n elements
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (key) {
+                const translation = i18next.t(key);
+                if (translation && translation !== key) {
+                    // Update text but preserve HTML content inside
+                    const textContent = el.textContent.trim();
+                    const newText = translation;
+                    
+                    // Only update if content is different
+                    if (textContent !== newText) {
+                        el.textContent = newText;
+                    }
+                }
+            }
+        });
     }
 
     // Product Data
@@ -1990,7 +2017,8 @@ renderWeddingPackages() {
             cartTotal.textContent = '0€';
         }
 
-        alert('Košarica je bila izpraznjena!');
+        const alertText = typeof i18next !== 'undefined' ? i18next.t('notifications.cartCleared') : 'Košarica je bila izpraznjena!';
+        alert(alertText);
     }
 
     // Login Functions
@@ -2629,7 +2657,8 @@ renderWeddingPackages() {
         // Check if user is logged in via Supabase Auth
         const { data: { user } } = await window.supabaseClient.auth.getUser();
         if (!user) {
-            this.showNotification('Za zaključek nakupa se morate prijaviti!', 'error');
+            const message = typeof i18next !== 'undefined' ? i18next.t('notifications.loginRequired') : 'Za zaključek nakupa se morate prijaviti!';
+            this.showNotification(message, 'error');
             this.showLoginModal();
             return;
         }
@@ -3695,7 +3724,8 @@ function clearCart() {
         window.glaam.saveCartToStorage();
         
         // Show notification
-        window.glaam.showNotification('🗑️ Košarica je bila očiščena!', 'info');
+        const clearMsg = typeof i18next !== 'undefined' ? i18next.t('notifications.cartCleared') : 'Košarica je bila očiščena!';
+        window.glaam.showNotification(`🗑️ ${clearMsg}`, 'info');
         
         // Update cart display
         showCart();
