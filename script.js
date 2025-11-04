@@ -1250,12 +1250,18 @@ class GlaamWebsite {
                 menuOverlay.style.opacity = '1';
                 menuOverlay.style.pointerEvents = 'auto';
                 menuOverlay.style.visibility = 'visible';
-                document.body.style.overflow = 'hidden'; // Prepreči scroll
+                document.body.style.overflow = 'hidden'; // Prepreči scroll samo ko je meni odprt
+                // Zagotovi, da se meni prikaže
+                if (navMenu) {
+                    navMenu.style.display = 'flex';
+                    navMenu.style.visibility = 'visible';
+                    navMenu.style.opacity = '1';
+                }
             } else {
                 menuOverlay.style.opacity = '0';
                 menuOverlay.style.pointerEvents = 'none';
                 menuOverlay.style.visibility = 'hidden';
-                document.body.style.overflow = '';
+                document.body.style.overflow = ''; // Omogoči scroll ko je meni zaprt
             }
         };
         
@@ -1268,8 +1274,28 @@ class GlaamWebsite {
         if (mobileToggle && navMenu) {
             mobileToggle.addEventListener('click', (e) => {
                 e.stopPropagation(); // Prepreči propagacijo
-                mobileToggle.classList.toggle('active');
-                navMenu.classList.toggle('active');
+                e.preventDefault();
+                const isActive = navMenu.classList.contains('active');
+                
+                if (isActive) {
+                    // Zapri meni
+                    mobileToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                } else {
+                    // Odpri meni
+                    mobileToggle.classList.add('active');
+                    navMenu.classList.add('active');
+                    // Zagotovi, da se meni prikaže
+                    navMenu.style.display = 'flex';
+                    navMenu.style.visibility = 'visible';
+                    navMenu.style.opacity = '1';
+                    navMenu.style.position = 'fixed';
+                    navMenu.style.top = '80px';
+                    navMenu.style.left = '0';
+                    navMenu.style.width = '100%';
+                    navMenu.style.height = 'calc(100vh - 80px)';
+                    navMenu.style.zIndex = '10000';
+                }
                 updateOverlay();
             });
         }
@@ -1278,7 +1304,11 @@ class GlaamWebsite {
         if (menuOverlay) {
             menuOverlay.addEventListener('click', () => {
                 if (mobileToggle) mobileToggle.classList.remove('active');
-                if (navMenu) navMenu.classList.remove('active');
+                if (navMenu) {
+                    navMenu.classList.remove('active');
+                    navMenu.style.display = 'none';
+                    navMenu.style.visibility = 'hidden';
+                }
                 updateOverlay();
             });
         }
@@ -1287,7 +1317,11 @@ class GlaamWebsite {
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 if (mobileToggle) mobileToggle.classList.remove('active');
-                if (navMenu) navMenu.classList.remove('active');
+                if (navMenu) {
+                    navMenu.classList.remove('active');
+                    navMenu.style.display = 'none';
+                    navMenu.style.visibility = 'hidden';
+                }
                 updateOverlay();
             });
         });
@@ -1929,6 +1963,11 @@ renderWeddingPackages() {
         const filter = filterBtn.dataset.filter;
         console.log('Filter from handleFilter:', filter);
         this.currentProductsFilter = filter;
+        
+        // Zagotovi, da je scroll omogočen ko se filter spremeni
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        
         this.renderProducts(filter);
         
         // Also call applyFilter to show/hide custom size buttons
