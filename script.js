@@ -1251,12 +1251,6 @@ class GlaamWebsite {
                 menuOverlay.style.pointerEvents = 'auto';
                 menuOverlay.style.visibility = 'visible';
                 document.body.style.overflow = 'hidden'; // Prepreči scroll samo ko je meni odprt
-                // Zagotovi, da se meni prikaže
-                if (navMenu) {
-                    navMenu.style.display = 'flex';
-                    navMenu.style.visibility = 'visible';
-                    navMenu.style.opacity = '1';
-                }
             } else {
                 menuOverlay.style.opacity = '0';
                 menuOverlay.style.pointerEvents = 'none';
@@ -1273,28 +1267,20 @@ class GlaamWebsite {
         
         if (mobileToggle && navMenu) {
             mobileToggle.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prepreči propagacijo
-                e.preventDefault();
+                e.stopPropagation();
                 const isActive = navMenu.classList.contains('active');
                 
                 if (isActive) {
                     // Zapri meni
                     mobileToggle.classList.remove('active');
                     navMenu.classList.remove('active');
+                    navMenu.style.display = 'none';
                 } else {
-                    // Odpri meni
-                    mobileToggle.classList.add('active');
+                    // Odpri meni - najprej prikaži meni, nato overlay
                     navMenu.classList.add('active');
-                    // Zagotovi, da se meni prikaže
-                    navMenu.style.display = 'flex';
-                    navMenu.style.visibility = 'visible';
-                    navMenu.style.opacity = '1';
-                    navMenu.style.position = 'fixed';
-                    navMenu.style.top = '80px';
-                    navMenu.style.left = '0';
-                    navMenu.style.width = '100%';
-                    navMenu.style.height = 'calc(100vh - 80px)';
-                    navMenu.style.zIndex = '10000';
+                    mobileToggle.classList.add('active');
+                    // Prikaži meni z inline stili
+                    navMenu.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important; position: fixed !important; top: 80px !important; left: 0 !important; width: 100% !important; height: calc(100vh - 80px) !important; background: var(--white) !important; flex-direction: column !important; justify-content: flex-start !important; align-items: center !important; padding: 2rem !important; box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important; z-index: 10001 !important; overflow-y: auto !important; list-style: none !important; gap: 0 !important; pointer-events: auto !important;';
                 }
                 updateOverlay();
             });
@@ -1963,11 +1949,6 @@ renderWeddingPackages() {
         const filter = filterBtn.dataset.filter;
         console.log('Filter from handleFilter:', filter);
         this.currentProductsFilter = filter;
-        
-        // Zagotovi, da je scroll omogočen ko se filter spremeni
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
-        
         this.renderProducts(filter);
         
         // Also call applyFilter to show/hide custom size buttons
