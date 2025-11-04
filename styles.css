@@ -2316,6 +2316,8 @@ main {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     backdrop-filter: saturate(140%) blur(2px);
     margin-bottom: 0; /* keep within tile background */
+    position: relative; /* Za pravilno pozicioniranje */
+    overflow: visible; /* Omogoči gumbu, da se prikaže */
 }
 
 .product-price {
@@ -2354,16 +2356,45 @@ main {
     box-shadow: 0 4px 12px rgba(25, 135, 84, 0.25);
     text-transform: none;
     letter-spacing: 0.3px;
+    position: relative; /* Za pravilno pozicioniranje */
+    z-index: 1; /* Nad ozadjem */
 }
 
 /* Mobile stacking for footer */
 @media (max-width: 640px) {
+    /* Omogoči footer in gumbu, da se pravilno prikažeta */
+    .product-card {
+        overflow: visible !important;
+        padding-bottom: 0.5rem; /* Dodaj prostor za gumb */
+    }
+    
+    .product-info {
+        overflow: visible !important;
+        padding-bottom: 0.5rem;
+    }
+    
     .product-footer {
         grid-template-columns: 1fr;
         gap: 0.5rem;
+        padding: 0.75rem 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+        min-height: auto !important;
+        position: relative;
+        overflow: visible;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
     }
+    
     .product-btn {
-        width: min(280px, 90%);
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.7rem 0.9rem !important;
+        font-size: 0.85rem !important;
+        margin: 0 !important;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 1;
+        border-radius: 20px !important;
     }
     
     /* Better mobile spacing for product cards */
@@ -3400,15 +3431,34 @@ main {
     }
     
     .mobile-toggle {
-        display: flex;
+        display: flex !important;
+        visibility: visible !important;
+        z-index: 10000;
+        position: relative;
+    }
+    
+    /* Overlay za mobilni meni - ustvarimo z JavaScriptom */
+    .mobile-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+    }
+    
+    /* Skrij desktop navigacijo na mobilnih napravah */
+    .nav-menu:not(.active) {
+        display: none !important;
     }
     
     .nav-menu {
         position: fixed;
-        top: 100px;
+        top: 80px;
         left: -100%;
         width: 100%;
-        height: calc(100vh - 100px);
+        height: calc(100vh - 80px);
         background: var(--white);
         flex-direction: column;
         justify-content: flex-start;
@@ -3416,11 +3466,15 @@ main {
         padding: var(--space-2xl);
         box-shadow: var(--shadow-lg);
         transition: left var(--transition-medium);
-        z-index: 999;
+        z-index: 9999;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .nav-menu.active {
         left: 0;
+        display: flex !important;
+        visibility: visible !important;
     }
     
     .nav-menu .nav-item {
@@ -3652,6 +3706,23 @@ main {
     #zalni .funeral-category .products-grid {
         grid-template-columns: 1fr !important;
     }
+    
+    /* Product cards - dodatni popravki za zelo majhne zaslone */
+    .product-card {
+        overflow: visible !important;
+        min-height: 380px !important;
+    }
+    
+    .product-footer {
+        padding: 0.6rem 0.3rem !important;
+        margin-bottom: 0.4rem !important;
+    }
+    
+    .product-btn {
+        width: 100% !important;
+        padding: 0.6rem 0.7rem !important;
+        font-size: 0.75rem !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -3688,6 +3759,22 @@ main {
     /* Navigation */
     .navbar {
         padding: 1rem;
+    }
+    
+    /* Product cards - dodatni popravki za manjše zaslone */
+    .product-card {
+        overflow: visible !important;
+    }
+    
+    .product-footer {
+        padding: 0.7rem 0.4rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .product-btn {
+        width: 100% !important;
+        padding: 0.65rem 0.8rem !important;
+        font-size: 0.8rem !important;
     }
     
     .nav-brand {

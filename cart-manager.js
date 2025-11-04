@@ -32,7 +32,8 @@ class CartManager {
     // Naloži košarico iz Supabase
     async loadCartFromSupabase() {
         try {
-            const { data, error } = await this.supabase
+            // Poskusimo naložiti z join na products tabelo
+            let { data, error } = await this.supabase
                 .from('cart_items')
                 .select(`
                     id,
@@ -48,22 +49,48 @@ class CartManager {
                 `)
                 .eq('user_id', this.currentUser.id);
 
-            if (error) throw error;
+            // Če join ne deluje (ker products tabela morda ne obstaja ali ima drugačno strukturo),
+            // naložimo samo cart_items in uporabimo product_id direktno
+            if (error || !data || data.length === 0 || !data[0].products) {
+                console.log('Products join failed or no products relation, loading cart_items only');
+                const { data: cartData, error: cartError } = await this.supabase
+                    .from('cart_items')
+                    .select('id, product_id, quantity')
+                    .eq('user_id', this.currentUser.id);
 
-            // Pretvori v cart format
+                if (cartError) throw cartError;
+                if (!cartData || cartData.length === 0) {
+                    this.cart = [];
+                    return;
+                }
+
+                // Če nimate products tabele, shranimo samo product_id
+                // Frontend bo moral pridobiti podatke o produktih iz lokalnega arraya
+                this.cart = cartData.map(item => ({
+                    id: item.product_id, // Shrani product_id (BIGINT ali UUID)
+                    quantity: item.quantity,
+                    cartItemId: item.id
+                }));
+
+                console.log('Cart loaded from Supabase (without products join):', this.cart);
+                return;
+            }
+
+            // Pretvori v cart format (če products join deluje)
             this.cart = data.map(item => ({
-                id: item.products.id,
-                name: item.products.name,
-                description: item.products.description,
-                price: parseFloat(item.products.price),
-                image: item.products.image_url,
+                id: item.products ? item.products.id : item.product_id,
+                name: item.products ? item.products.name : `Product ${item.product_id}`,
+                description: item.products ? item.products.description : '',
+                price: item.products ? parseFloat(item.products.price) : 0,
+                image: item.products ? item.products.image_url : null,
                 quantity: item.quantity,
-                cartItemId: item.id // Shrani ID za posodabljanje
+                cartItemId: item.id
             }));
 
             console.log('Cart loaded from Supabase:', this.cart);
         } catch (error) {
             console.error('Error loading cart from Supabase:', error);
+            this.cart = [];
         }
     }
 

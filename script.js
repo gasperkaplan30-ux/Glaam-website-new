@@ -7,6 +7,7 @@ let supabase = null;
 class GlaamWebsite {
     constructor() {
         this.cart = [];
+        this.cartManager = null; // CartManager za Supabase sinhronizacijo
         this.currentPage = 'domov';
         this.products = this.initProducts();
         this.weddingPackages = this.initWeddingPackages();
@@ -110,7 +111,10 @@ class GlaamWebsite {
         console.log('Supabase auth available:', !!(window.supabaseClient && window.supabaseClient.auth));
         console.log('Supabase getUser available:', !!(window.supabaseClient && window.supabaseClient.auth && window.supabaseClient.auth.getUser));
         
-        // Load cart from localStorage
+        // Initialize CartManager (če je na voljo)
+        this.initializeCartManager();
+        
+        // Load cart from localStorage (fallback, če CartManager še ni inicializiran)
         this.loadCartFromStorage();
         
         // CRITICAL: Load language preference BEFORE initializing i18n
@@ -138,6 +142,54 @@ class GlaamWebsite {
         this.hideLoadingScreen();
         this.initScrollEffects();
         this.initParticles();
+    }
+
+    // Initialize CartManager
+    async initializeCartManager() {
+        try {
+            if (window.CartManager && window.supabaseClient) {
+                this.cartManager = new CartManager(window.supabaseClient);
+                await this.cartManager.initialize();
+                
+                // Sinhroniziraj lokalno košarico z CartManager
+                let cartItems = this.cartManager.getCart();
+                
+                // Če CartManager naloži samo product_id (brez products join),
+                // dodaj podatke o produktih iz lokalnega arraya
+                cartItems = cartItems.map(item => {
+                    // Če item nima imena ali cene, poišči produkt v lokalnem arrayu
+                    if (!item.name || !item.price) {
+                        let product = this.products.find(p => p.id === item.id);
+                        if (!product) {
+                            product = this.weddingPackages.find(p => p.id === item.id);
+                        }
+                        if (!product) {
+                            product = this.funeralProducts.find(p => p.id === item.id);
+                        }
+                        
+                        if (product) {
+                            return {
+                                ...item,
+                                name: product.name,
+                                description: product.description,
+                                price: product.price,
+                                image: product.image
+                            };
+                        }
+                    }
+                    return item;
+                });
+                
+                this.cart = cartItems;
+                this.updateCart();
+                
+                console.log('CartManager initialized successfully with', cartItems.length, 'items');
+            } else {
+                console.warn('CartManager or Supabase client not available');
+            }
+        } catch (error) {
+            console.error('Error initializing CartManager:', error);
+        }
     }
 
     initializeSupabase() {
@@ -1187,7 +1239,58 @@ class GlaamWebsite {
             mobileToggle.addEventListener('click', () => {
                 mobileToggle.classList.toggle('active');
                 navMenu.classList.toggle('active');
+                // Dodaj/premakni overlay
+                if (navMenu.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden'; // Prepreči scroll
+                } else {
+                    document.body.style.overflow = '';
+                }
             });
+        }
+        
+        // Zapri meni, ko kliknemo na overlay (zunaj menija)
+        if (navMenu) {
+            navMenu.addEventListener('click', (e) => {
+                // Če kliknemo na overlay (zunaj menija), zapri meni
+                if (e.target === navMenu) {
+                    mobileToggle?.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+        
+        // Dodaj overlay element
+        const menuOverlay = document.createElement('div');
+        menuOverlay.className = 'mobile-menu-overlay';
+        menuOverlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 9998; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; visibility: hidden;';
+        document.body.appendChild(menuOverlay);
+        
+        // Posodobi overlay, ko se meni odpre/zapre
+        const updateOverlay = () => {
+            if (navMenu && navMenu.classList.contains('active')) {
+                menuOverlay.style.opacity = '1';
+                menuOverlay.style.pointerEvents = 'auto';
+                menuOverlay.style.visibility = 'visible';
+            } else {
+                menuOverlay.style.opacity = '0';
+                menuOverlay.style.pointerEvents = 'none';
+                menuOverlay.style.visibility = 'hidden';
+            }
+        };
+        
+        // Zapri meni, ko kliknemo na overlay
+        menuOverlay.addEventListener('click', () => {
+            mobileToggle?.classList.remove('active');
+            navMenu?.classList.remove('active');
+            document.body.style.overflow = '';
+            updateOverlay();
+        });
+        
+        // Opazuj spremembe v navMenu
+        if (navMenu) {
+            const observer = new MutationObserver(updateOverlay);
+            observer.observe(navMenu, { attributes: true, attributeFilter: ['class'] });
         }
         
         // Dropdown menu toggle (mobile + desktop): keep open when clicking inside menu
@@ -1220,6 +1323,8 @@ class GlaamWebsite {
             link.addEventListener('click', () => {
                 mobileToggle?.classList.remove('active');
                 navMenu?.classList.remove('active');
+                document.body.style.overflow = '';
+                updateOverlay();
             });
         });
 
@@ -1853,7 +1958,7 @@ renderWeddingPackages() {
     }
 
     // Cart Management
-    addToCart(productId) {
+    async addToCart(productId) {
         // Check products, wedding packages, and funeral products
         let product = this.products.find(p => p.id === productId);
         if (!product) {
@@ -1864,32 +1969,49 @@ renderWeddingPackages() {
         }
         
         if (product) {
-            // Regular cart functionality for all products
-                // Regular cart functionality
-                let quantity = 1;
-                if (productId <= 75) { // Regular products have IDs 1-75
-                    const quantityElement = document.getElementById(`qty-${productId}`);
-                    quantity = quantityElement ? parseInt(quantityElement.textContent) : 1;
-                }
-                
-                const existingItem = this.cart.find(item => item.id === productId && !item.isCustomBouquet);
-            
-            if (existingItem) {
-                    existingItem.quantity += quantity;
-                    this.showNotification(`${product.name} - količina povečana na ${existingItem.quantity}!`, 'success');
-            } else {
-                    this.cart.push({ ...product, quantity: quantity });
-                    this.showNotification(`${product.name} dodan v košarico!`, 'success');
+            let quantity = 1;
+            if (productId <= 75) { // Regular products have IDs 1-75
+                const quantityElement = document.getElementById(`qty-${productId}`);
+                quantity = quantityElement ? parseInt(quantityElement.textContent) : 1;
             }
             
-            this.updateCart();
-                this.saveCartToStorage();
-                
-                console.log(`Product ${product.name} (qty: ${quantity}) added to cart. Total items: ${this.cart.length}`);
-            
+            // Uporabi CartManager če je na voljo
+            if (this.cartManager) {
+                try {
+                    await this.cartManager.addToCart(productId, quantity, product);
+                    this.cart = this.cartManager.getCart();
+                    this.updateCart();
+                    this.showNotification(`${product.name} dodan v košarico!`, 'success');
+                    console.log(`Product ${product.name} (qty: ${quantity}) added to cart via CartManager`);
+                } catch (error) {
+                    console.error('Error adding to cart via CartManager:', error);
+                    // Fallback na lokalno košarico
+                    this.addToCartLocal(product, quantity);
+                }
+            } else {
+                // Fallback na lokalno košarico
+                this.addToCartLocal(product, quantity);
+            }
         } else {
             console.error(`Product with ID ${productId} not found`);
         }
+    }
+    
+    // Lokalna metoda za dodajanje (fallback)
+    addToCartLocal(product, quantity) {
+        const existingItem = this.cart.find(item => item.id === product.id && !item.isCustomBouquet);
+        
+        if (existingItem) {
+            existingItem.quantity += quantity;
+            this.showNotification(`${product.name} - količina povečana na ${existingItem.quantity}!`, 'success');
+        } else {
+            this.cart.push({ ...product, quantity: quantity });
+            this.showNotification(`${product.name} dodan v košarico!`, 'success');
+        }
+        
+        this.updateCart();
+        this.saveCartToStorage();
+        console.log(`Product ${product.name} (qty: ${quantity}) added to cart locally. Total items: ${this.cart.length}`);
     }
 
     increaseQuantity(productId) {
@@ -1923,16 +2045,35 @@ renderWeddingPackages() {
         }
     }
 
-    removeFromCart(productId) {
+    async removeFromCart(productId) {
         const item = this.cart.find(item => item.id === productId);
         if (item) {
+            // Uporabi CartManager če je na voljo
+            if (this.cartManager) {
+                try {
+                    await this.cartManager.removeFromCart(productId);
+                    this.cart = this.cartManager.getCart();
+                    this.updateCart();
+                    this.showNotification(`🗑️ ${item.name} odstranjen iz košarice`, 'info');
+                    console.log(`Product ${productId} removed from cart via CartManager`);
+                } catch (error) {
+                    console.error('Error removing from cart via CartManager:', error);
+                    // Fallback na lokalno košarico
+                    this.removeFromCartLocal(productId, item);
+                }
+            } else {
+                // Fallback na lokalno košarico
+                this.removeFromCartLocal(productId, item);
+            }
+        }
+    }
+    
+    // Lokalna metoda za odstranjevanje (fallback)
+    removeFromCartLocal(productId, item) {
         this.cart = this.cart.filter(item => item.id !== productId);
         this.updateCart();
-            this.showNotification(`🗑️ ${item.name} odstranjen iz košarice`, 'info');
-            
-            // Save to localStorage
-            this.saveCartToStorage();
-        }
+        this.showNotification(`🗑️ ${item.name} odstranjen iz košarice`, 'info');
+        this.saveCartToStorage();
     }
 
     updateCart() {
@@ -2023,7 +2164,24 @@ renderWeddingPackages() {
         }
     }
 
-    clearCart() {
+    async clearCart() {
+        // Počisti CartManager če je na voljo
+        if (this.cartManager) {
+            try {
+                await this.cartManager.clearCart();
+                this.cart = [];
+            } catch (error) {
+                console.error('Error clearing cart via CartManager:', error);
+                // Fallback
+                this.cart = [];
+                this.saveCartToStorage();
+            }
+        } else {
+            // Fallback na lokalno košarico
+            this.cart = [];
+            this.saveCartToStorage();
+        }
+        this.updateCart();
         const cartItems = document.getElementById('cartItems');
         const cartTotal = document.getElementById('cartTotal');
 
@@ -2136,6 +2294,16 @@ renderWeddingPackages() {
                     userId: data.user.id,
                     loggedIn: true 
                 }));
+                
+                // Inicializiraj CartManager ob prijavi
+                if (this.cartManager) {
+                    await this.cartManager.onUserLogin(data.user);
+                    this.cart = this.cartManager.getCart();
+                    this.updateCart();
+                } else {
+                    // Inicializiraj CartManager če še ni bil inicializiran
+                    await this.initializeCartManager();
+                }
             }
         } catch (error) {
             console.error('Login error:', error);
@@ -2500,6 +2668,12 @@ renderWeddingPackages() {
     }
 
     async logout() {
+        // Počisti CartManager ob odjavi
+        if (this.cartManager) {
+            await this.cartManager.onUserLogout();
+            this.cart = [];
+            this.updateCart();
+        }
         try {
             const { error } = await window.supabaseClient.auth.signOut();
             
@@ -3746,12 +3920,26 @@ function closeCart() {
     hideCart();
 }
 
-function clearCart() {
+async function clearCart() {
     // Clear the cart array
     if (window.glaam) {
-        window.glaam.cart = [];
+        // Uporabi CartManager če je na voljo
+        if (window.glaam.cartManager) {
+            try {
+                await window.glaam.cartManager.clearCart();
+                window.glaam.cart = [];
+            } catch (error) {
+                console.error('Error clearing cart via CartManager:', error);
+                // Fallback
+                window.glaam.cart = [];
+                window.glaam.saveCartToStorage();
+            }
+        } else {
+            // Fallback na lokalno košarico
+            window.glaam.cart = [];
+            window.glaam.saveCartToStorage();
+        }
         window.glaam.updateCart();
-        window.glaam.saveCartToStorage();
         
         // Show notification
         const clearMsg = typeof i18next !== 'undefined' ? i18next.t('notifications.cartCleared') : 'Košarica je bila očiščena!';
@@ -3782,16 +3970,31 @@ function removeFromCartGlobal(productId) {
 }
 
 // Global function to update quantity
-function updateQuantityGlobal(productId, change) {
+async function updateQuantityGlobal(productId, change) {
     if (window.glaam) {
         const item = window.glaam.cart.find(item => item.id === productId);
         if (item) {
-            item.quantity += change;
-            if (item.quantity <= 0) {
-                window.glaam.removeFromCart(productId);
+            const newQuantity = item.quantity + change;
+            if (newQuantity <= 0) {
+                await window.glaam.removeFromCart(productId);
             } else {
+                // Uporabi CartManager če je na voljo
+                if (window.glaam.cartManager) {
+                    try {
+                        await window.glaam.cartManager.updateQuantity(productId, newQuantity);
+                        window.glaam.cart = window.glaam.cartManager.getCart();
+                    } catch (error) {
+                        console.error('Error updating quantity via CartManager:', error);
+                        // Fallback
+                        item.quantity = newQuantity;
+                        window.glaam.saveCartToStorage();
+                    }
+                } else {
+                    // Fallback na lokalno košarico
+                    item.quantity = newQuantity;
+                    window.glaam.saveCartToStorage();
+                }
                 window.glaam.updateCart();
-                window.glaam.saveCartToStorage();
                 showCart(); // Refresh cart display
             }
         }
