@@ -1235,36 +1235,14 @@ class GlaamWebsite {
         const mobileToggle = document.getElementById('mobileToggle');
         const navMenu = document.getElementById('navMenu');
         
-        if (mobileToggle) {
-            mobileToggle.addEventListener('click', () => {
-                mobileToggle.classList.toggle('active');
-                navMenu.classList.toggle('active');
-                // Dodaj/premakni overlay
-                if (navMenu.classList.contains('active')) {
-                    document.body.style.overflow = 'hidden'; // Prepreči scroll
-                } else {
-                    document.body.style.overflow = '';
-                }
-            });
+        // Dodaj overlay element (če še ne obstaja)
+        let menuOverlay = document.querySelector('.mobile-menu-overlay');
+        if (!menuOverlay) {
+            menuOverlay = document.createElement('div');
+            menuOverlay.className = 'mobile-menu-overlay';
+            menuOverlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 9998; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; visibility: hidden;';
+            document.body.appendChild(menuOverlay);
         }
-        
-        // Zapri meni, ko kliknemo na overlay (zunaj menija)
-        if (navMenu) {
-            navMenu.addEventListener('click', (e) => {
-                // Če kliknemo na overlay (zunaj menija), zapri meni
-                if (e.target === navMenu) {
-                    mobileToggle?.classList.remove('active');
-                    navMenu.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-        }
-        
-        // Dodaj overlay element
-        const menuOverlay = document.createElement('div');
-        menuOverlay.className = 'mobile-menu-overlay';
-        menuOverlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 9998; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; visibility: hidden;';
-        document.body.appendChild(menuOverlay);
         
         // Posodobi overlay, ko se meni odpre/zapre
         const updateOverlay = () => {
@@ -1272,19 +1250,46 @@ class GlaamWebsite {
                 menuOverlay.style.opacity = '1';
                 menuOverlay.style.pointerEvents = 'auto';
                 menuOverlay.style.visibility = 'visible';
+                document.body.style.overflow = 'hidden'; // Prepreči scroll
             } else {
                 menuOverlay.style.opacity = '0';
                 menuOverlay.style.pointerEvents = 'none';
                 menuOverlay.style.visibility = 'hidden';
+                document.body.style.overflow = '';
             }
         };
         
-        // Zapri meni, ko kliknemo na overlay
-        menuOverlay.addEventListener('click', () => {
-            mobileToggle?.classList.remove('active');
-            navMenu?.classList.remove('active');
-            document.body.style.overflow = '';
+        // Inicialno skrij meni na mobilnih napravah
+        if (window.innerWidth <= 768 && navMenu) {
+            navMenu.classList.remove('active');
             updateOverlay();
+        }
+        
+        if (mobileToggle && navMenu) {
+            mobileToggle.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prepreči propagacijo
+                mobileToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                updateOverlay();
+            });
+        }
+        
+        // Zapri meni, ko kliknemo na overlay
+        if (menuOverlay) {
+            menuOverlay.addEventListener('click', () => {
+                if (mobileToggle) mobileToggle.classList.remove('active');
+                if (navMenu) navMenu.classList.remove('active');
+                updateOverlay();
+            });
+        }
+        
+        // Zapri meni, ko kliknemo na navigacijski link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (mobileToggle) mobileToggle.classList.remove('active');
+                if (navMenu) navMenu.classList.remove('active');
+                updateOverlay();
+            });
         });
         
         // Opazuj spremembe v navMenu
@@ -1292,6 +1297,15 @@ class GlaamWebsite {
             const observer = new MutationObserver(updateOverlay);
             observer.observe(navMenu, { attributes: true, attributeFilter: ['class'] });
         }
+        
+        // Zapri meni, ko se okno preoblikuje (desktop -> mobile)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && navMenu) {
+                navMenu.classList.remove('active');
+                if (mobileToggle) mobileToggle.classList.remove('active');
+                updateOverlay();
+            }
+        });
         
         // Dropdown menu toggle (mobile + desktop): keep open when clicking inside menu
         document.addEventListener('click', (e) => {
