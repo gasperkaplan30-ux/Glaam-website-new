@@ -1298,40 +1298,55 @@ class GlaamWebsite {
                     navMenu.style.removeProperty('gap');
                     navMenu.style.removeProperty('pointer-events');
                 } else {
-                    // Odpri meni - najprej prikaži overlay, nato meni
+                    // Odpri meni
                     console.log('Opening menu');
-                    // Najprej prikaži overlay
-                    updateOverlay();
-                    // Nato prikaži meni
                     navMenu.classList.add('active');
                     mobileToggle.classList.add('active');
-                    // Nastavi inline stile z !important - uporabi requestAnimationFrame za zagotovitev prikaza
-                    requestAnimationFrame(() => {
-                        navMenu.style.setProperty('display', 'flex', 'important');
-                        navMenu.style.setProperty('visibility', 'visible', 'important');
-                        navMenu.style.setProperty('opacity', '1', 'important');
-                        navMenu.style.setProperty('position', 'fixed', 'important');
-                        navMenu.style.setProperty('top', '80px', 'important');
-                        navMenu.style.setProperty('left', '0', 'important');
-                        navMenu.style.setProperty('width', '100%', 'important');
-                        navMenu.style.setProperty('height', 'calc(100vh - 80px)', 'important');
-                        navMenu.style.setProperty('background', '#ffffff', 'important');
-                        navMenu.style.setProperty('flex-direction', 'column', 'important');
-                        navMenu.style.setProperty('justify-content', 'flex-start', 'important');
-                        navMenu.style.setProperty('align-items', 'center', 'important');
-                        navMenu.style.setProperty('padding', '2rem', 'important');
-                        navMenu.style.setProperty('box-shadow', '0 10px 30px rgba(0,0,0,0.2)', 'important');
-                        navMenu.style.setProperty('z-index', '10002', 'important'); // Višji kot overlay
-                        navMenu.style.setProperty('overflow-y', 'auto', 'important');
-                        navMenu.style.setProperty('list-style', 'none', 'important');
-                        navMenu.style.setProperty('gap', '0', 'important');
-                        navMenu.style.setProperty('pointer-events', 'auto', 'important');
-                        navMenu.style.setProperty('margin', '0', 'important');
-                        console.log('Menu styles applied, computed display:', window.getComputedStyle(navMenu).display);
-                        console.log('Menu z-index:', window.getComputedStyle(navMenu).zIndex);
-                    });
+                    
+                    // Nastavi inline stile TAKOJ - ne čakaj na requestAnimationFrame
+                    // Uporabi cssText za zagotovitev, da se vse nastavi naenkrat
+                    const menuStyles = `
+                        display: flex !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        position: fixed !important;
+                        top: 80px !important;
+                        left: 0 !important;
+                        width: 100% !important;
+                        height: calc(100vh - 80px) !important;
+                        background: #ffffff !important;
+                        flex-direction: column !important;
+                        justify-content: flex-start !important;
+                        align-items: center !important;
+                        padding: 2rem !important;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+                        z-index: 10002 !important;
+                        overflow-y: auto !important;
+                        list-style: none !important;
+                        gap: 0 !important;
+                        pointer-events: auto !important;
+                        margin: 0 !important;
+                        transform: none !important;
+                    `;
+                    navMenu.style.cssText = menuStyles;
+                    
+                    // Posodobi overlay
+                    updateOverlay();
+                    
+                    // Preveri, ali se meni res prikaže
+                    setTimeout(() => {
+                        const computed = window.getComputedStyle(navMenu);
+                        console.log('Menu opened - display:', computed.display);
+                        console.log('Menu opened - visibility:', computed.visibility);
+                        console.log('Menu opened - opacity:', computed.opacity);
+                        console.log('Menu opened - z-index:', computed.zIndex);
+                        console.log('Menu opened - position:', computed.position);
+                        if (computed.display === 'none') {
+                            console.error('MENU JE ŠE VEDNO SKRIT! Poskušam ponovno prikazati...');
+                            navMenu.style.cssText = menuStyles;
+                        }
+                    }, 100);
                 }
-                updateOverlay();
             });
         }
         
