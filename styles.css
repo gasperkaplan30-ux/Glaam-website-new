@@ -3467,19 +3467,36 @@ main {
         left: 0 !important;
         width: 100% !important;
         height: calc(100vh - 80px) !important;
-        background: var(--white) !important;
+        background: #ffffff !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
         align-items: center !important;
-        padding: var(--space-2xl) !important;
-        box-shadow: var(--shadow-lg) !important;
-        transition: opacity 0.3s ease, left var(--transition-medium) !important;
+        padding: 2rem !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+        transition: opacity 0.3s ease !important;
         z-index: 10001 !important; /* Višji z-index kot overlay */
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
         list-style: none !important;
         gap: 0 !important;
         pointer-events: auto !important;
+        margin: 0 !important;
+    }
+    
+    /* Zagotovi, da so nav-item elementi vidni */
+    .nav-menu.active .nav-item {
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    
+    /* Zagotovi, da so nav-link elementi klikljivi */
+    .nav-menu.active .nav-link {
+        display: block !important;
+        width: 100% !important;
+        padding: 1rem !important;
+        color: var(--text-dark) !important;
+        text-decoration: none !important;
     }
     
     /* Inicialno skrij meni (preden se klikne) */

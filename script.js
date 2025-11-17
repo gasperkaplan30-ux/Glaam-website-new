@@ -1240,7 +1240,7 @@ class GlaamWebsite {
         if (!menuOverlay) {
             menuOverlay = document.createElement('div');
             menuOverlay.className = 'mobile-menu-overlay';
-            menuOverlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 9998; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; visibility: hidden;';
+            menuOverlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; visibility: hidden;';
             document.body.appendChild(menuOverlay);
         }
         
@@ -1268,48 +1268,103 @@ class GlaamWebsite {
         if (mobileToggle && navMenu) {
             mobileToggle.addEventListener('click', (e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 const isActive = navMenu.classList.contains('active');
+                console.log('Mobile toggle clicked, isActive:', isActive);
                 
                 if (isActive) {
                     // Zapri meni
+                    console.log('Closing menu');
                     mobileToggle.classList.remove('active');
                     navMenu.classList.remove('active');
-                    navMenu.style.display = 'none';
+                    // Odstrani inline stile
+                    navMenu.style.removeProperty('display');
+                    navMenu.style.removeProperty('visibility');
+                    navMenu.style.removeProperty('opacity');
+                    navMenu.style.removeProperty('position');
+                    navMenu.style.removeProperty('top');
+                    navMenu.style.removeProperty('left');
+                    navMenu.style.removeProperty('width');
+                    navMenu.style.removeProperty('height');
+                    navMenu.style.removeProperty('background');
+                    navMenu.style.removeProperty('flex-direction');
+                    navMenu.style.removeProperty('justify-content');
+                    navMenu.style.removeProperty('align-items');
+                    navMenu.style.removeProperty('padding');
+                    navMenu.style.removeProperty('box-shadow');
+                    navMenu.style.removeProperty('z-index');
+                    navMenu.style.removeProperty('overflow-y');
+                    navMenu.style.removeProperty('list-style');
+                    navMenu.style.removeProperty('gap');
+                    navMenu.style.removeProperty('pointer-events');
                 } else {
-                    // Odpri meni - najprej prikaži meni, nato overlay
+                    // Odpri meni
+                    console.log('Opening menu');
                     navMenu.classList.add('active');
                     mobileToggle.classList.add('active');
-                    // Prikaži meni z inline stili
-                    navMenu.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important; position: fixed !important; top: 80px !important; left: 0 !important; width: 100% !important; height: calc(100vh - 80px) !important; background: var(--white) !important; flex-direction: column !important; justify-content: flex-start !important; align-items: center !important; padding: 2rem !important; box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important; z-index: 10001 !important; overflow-y: auto !important; list-style: none !important; gap: 0 !important; pointer-events: auto !important;';
+                    // Nastavi inline stile z !important
+                    navMenu.style.setProperty('display', 'flex', 'important');
+                    navMenu.style.setProperty('visibility', 'visible', 'important');
+                    navMenu.style.setProperty('opacity', '1', 'important');
+                    navMenu.style.setProperty('position', 'fixed', 'important');
+                    navMenu.style.setProperty('top', '80px', 'important');
+                    navMenu.style.setProperty('left', '0', 'important');
+                    navMenu.style.setProperty('width', '100%', 'important');
+                    navMenu.style.setProperty('height', 'calc(100vh - 80px)', 'important');
+                    navMenu.style.setProperty('background', '#ffffff', 'important');
+                    navMenu.style.setProperty('flex-direction', 'column', 'important');
+                    navMenu.style.setProperty('justify-content', 'flex-start', 'important');
+                    navMenu.style.setProperty('align-items', 'center', 'important');
+                    navMenu.style.setProperty('padding', '2rem', 'important');
+                    navMenu.style.setProperty('box-shadow', '0 10px 30px rgba(0,0,0,0.2)', 'important');
+                    navMenu.style.setProperty('z-index', '10001', 'important');
+                    navMenu.style.setProperty('overflow-y', 'auto', 'important');
+                    navMenu.style.setProperty('list-style', 'none', 'important');
+                    navMenu.style.setProperty('gap', '0', 'important');
+                    navMenu.style.setProperty('pointer-events', 'auto', 'important');
+                    console.log('Menu styles applied, computed display:', window.getComputedStyle(navMenu).display);
                 }
                 updateOverlay();
             });
         }
         
+        // Funkcija za zapiranje menija
+        const closeMobileMenu = () => {
+            if (mobileToggle) mobileToggle.classList.remove('active');
+            if (navMenu) {
+                navMenu.classList.remove('active');
+                // Odstrani vse inline stile
+                navMenu.style.removeProperty('display');
+                navMenu.style.removeProperty('visibility');
+                navMenu.style.removeProperty('opacity');
+                navMenu.style.removeProperty('position');
+                navMenu.style.removeProperty('top');
+                navMenu.style.removeProperty('left');
+                navMenu.style.removeProperty('width');
+                navMenu.style.removeProperty('height');
+                navMenu.style.removeProperty('background');
+                navMenu.style.removeProperty('flex-direction');
+                navMenu.style.removeProperty('justify-content');
+                navMenu.style.removeProperty('align-items');
+                navMenu.style.removeProperty('padding');
+                navMenu.style.removeProperty('box-shadow');
+                navMenu.style.removeProperty('z-index');
+                navMenu.style.removeProperty('overflow-y');
+                navMenu.style.removeProperty('list-style');
+                navMenu.style.removeProperty('gap');
+                navMenu.style.removeProperty('pointer-events');
+            }
+            updateOverlay();
+        };
+        
         // Zapri meni, ko kliknemo na overlay
         if (menuOverlay) {
-            menuOverlay.addEventListener('click', () => {
-                if (mobileToggle) mobileToggle.classList.remove('active');
-                if (navMenu) {
-                    navMenu.classList.remove('active');
-                    navMenu.style.display = 'none';
-                    navMenu.style.visibility = 'hidden';
-                }
-                updateOverlay();
-            });
+            menuOverlay.addEventListener('click', closeMobileMenu);
         }
         
         // Zapri meni, ko kliknemo na navigacijski link
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (mobileToggle) mobileToggle.classList.remove('active');
-                if (navMenu) {
-                    navMenu.classList.remove('active');
-                    navMenu.style.display = 'none';
-                    navMenu.style.visibility = 'hidden';
-                }
-                updateOverlay();
-            });
+            link.addEventListener('click', closeMobileMenu);
         });
         
         // Opazuj spremembe v navMenu
