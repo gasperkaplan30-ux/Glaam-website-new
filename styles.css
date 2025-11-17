@@ -1002,11 +1002,13 @@ a {
     padding: var(--space-lg) 0;
     background: rgba(224, 236, 248, 0.98);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(248, 181, 183, 0.2);
     z-index: var(--z-fixed);
     transition: all var(--transition-medium);
     box-sizing: border-box;
     overflow-x: hidden;
+    margin: 0;
 }
 
 /* Ensure dropdown menus are visible above decorations and not clipped */
@@ -3368,6 +3370,17 @@ main {
 
 /* Responsive Design - Mobile Navigation Fix */
 @media (max-width: 768px) {
+    /* Odstrani beli kvadratek - zagotovi, da navbar začne na vrhu */
+    body {
+        padding-top: 0 !important;
+    }
+    
+    .navbar {
+        top: 0 !important;
+        margin-top: 0 !important;
+        padding-top: var(--space-md) !important;
+    }
+    
     .nav-container {
         padding: 0 0.75rem;
         flex-wrap: wrap;
@@ -3448,7 +3461,7 @@ main {
         width: 100%;
         height: 100vh;
         background: rgba(0, 0, 0, 0.5);
-        z-index: 10000; /* Pod menijem */
+        z-index: 10001; /* Pod menijem */
         pointer-events: auto; /* Omogoči klik na overlay */
     }
     
@@ -3474,7 +3487,7 @@ main {
         padding: 2rem !important;
         box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
         transition: opacity 0.3s ease !important;
-        z-index: 10001 !important; /* Višji z-index kot overlay */
+        z-index: 10002 !important; /* Višji z-index kot overlay */
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
         list-style: none !important;
@@ -3565,35 +3578,56 @@ main {
     
     .product-card {
         height: auto;
-        min-height: 380px;
+        min-height: 480px; /* Večja višina za lepši prikaz */
         max-width: 100%;
         width: 100%;
         box-sizing: border-box;
         overflow: hidden;
+        border-radius: var(--border-radius-2xl) !important; /* Enak kot desktop */
+        box-shadow: var(--shadow-lg) !important; /* Enak kot desktop */
+        display: flex;
+        flex-direction: column;
     }
     
     .product-image {
-        height: 150px;
-        font-size: 2.1rem;
+        height: 200px; /* Večja slika */
+        font-size: 2.5rem; /* Večja ikona */
+        flex-shrink: 0;
+    }
+    
+    .product-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1rem;
+        min-height: 280px;
     }
     
     .product-title {
-        font-size: 1.25rem;
-        min-height: 46px;
+        font-size: 1.3rem;
+        min-height: 50px;
+        margin-bottom: 0.5rem;
     }
     
     .product-description {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         line-height: 1.5;
+        margin-bottom: 0.75rem;
+        flex: 1;
     }
     
     .product-price {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
     }
     
     .product-btn {
-        font-size: 0.95rem;
-        padding: 0.8rem 1.3rem;
+        font-size: 0.9rem;
+        padding: 0.75rem 1.2rem;
+        width: 100%;
+        border-radius: var(--border-radius-lg);
     }
     
     /* Tablet: Hide text, show only icon */
@@ -3608,6 +3642,7 @@ main {
     .product-footer {
         min-height: auto;
         padding: 1rem;
+        margin-top: auto;
     }
 
     /* OPTION 2 ONLY active: remove expandable behavior on mobile */

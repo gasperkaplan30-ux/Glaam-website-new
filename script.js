@@ -1240,7 +1240,7 @@ class GlaamWebsite {
         if (!menuOverlay) {
             menuOverlay = document.createElement('div');
             menuOverlay.className = 'mobile-menu-overlay';
-            menuOverlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; visibility: hidden;';
+            menuOverlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; visibility: hidden;';
             document.body.appendChild(menuOverlay);
         }
         
@@ -1298,31 +1298,38 @@ class GlaamWebsite {
                     navMenu.style.removeProperty('gap');
                     navMenu.style.removeProperty('pointer-events');
                 } else {
-                    // Odpri meni
+                    // Odpri meni - najprej prikaži overlay, nato meni
                     console.log('Opening menu');
+                    // Najprej prikaži overlay
+                    updateOverlay();
+                    // Nato prikaži meni
                     navMenu.classList.add('active');
                     mobileToggle.classList.add('active');
-                    // Nastavi inline stile z !important
-                    navMenu.style.setProperty('display', 'flex', 'important');
-                    navMenu.style.setProperty('visibility', 'visible', 'important');
-                    navMenu.style.setProperty('opacity', '1', 'important');
-                    navMenu.style.setProperty('position', 'fixed', 'important');
-                    navMenu.style.setProperty('top', '80px', 'important');
-                    navMenu.style.setProperty('left', '0', 'important');
-                    navMenu.style.setProperty('width', '100%', 'important');
-                    navMenu.style.setProperty('height', 'calc(100vh - 80px)', 'important');
-                    navMenu.style.setProperty('background', '#ffffff', 'important');
-                    navMenu.style.setProperty('flex-direction', 'column', 'important');
-                    navMenu.style.setProperty('justify-content', 'flex-start', 'important');
-                    navMenu.style.setProperty('align-items', 'center', 'important');
-                    navMenu.style.setProperty('padding', '2rem', 'important');
-                    navMenu.style.setProperty('box-shadow', '0 10px 30px rgba(0,0,0,0.2)', 'important');
-                    navMenu.style.setProperty('z-index', '10001', 'important');
-                    navMenu.style.setProperty('overflow-y', 'auto', 'important');
-                    navMenu.style.setProperty('list-style', 'none', 'important');
-                    navMenu.style.setProperty('gap', '0', 'important');
-                    navMenu.style.setProperty('pointer-events', 'auto', 'important');
-                    console.log('Menu styles applied, computed display:', window.getComputedStyle(navMenu).display);
+                    // Nastavi inline stile z !important - uporabi requestAnimationFrame za zagotovitev prikaza
+                    requestAnimationFrame(() => {
+                        navMenu.style.setProperty('display', 'flex', 'important');
+                        navMenu.style.setProperty('visibility', 'visible', 'important');
+                        navMenu.style.setProperty('opacity', '1', 'important');
+                        navMenu.style.setProperty('position', 'fixed', 'important');
+                        navMenu.style.setProperty('top', '80px', 'important');
+                        navMenu.style.setProperty('left', '0', 'important');
+                        navMenu.style.setProperty('width', '100%', 'important');
+                        navMenu.style.setProperty('height', 'calc(100vh - 80px)', 'important');
+                        navMenu.style.setProperty('background', '#ffffff', 'important');
+                        navMenu.style.setProperty('flex-direction', 'column', 'important');
+                        navMenu.style.setProperty('justify-content', 'flex-start', 'important');
+                        navMenu.style.setProperty('align-items', 'center', 'important');
+                        navMenu.style.setProperty('padding', '2rem', 'important');
+                        navMenu.style.setProperty('box-shadow', '0 10px 30px rgba(0,0,0,0.2)', 'important');
+                        navMenu.style.setProperty('z-index', '10002', 'important'); // Višji kot overlay
+                        navMenu.style.setProperty('overflow-y', 'auto', 'important');
+                        navMenu.style.setProperty('list-style', 'none', 'important');
+                        navMenu.style.setProperty('gap', '0', 'important');
+                        navMenu.style.setProperty('pointer-events', 'auto', 'important');
+                        navMenu.style.setProperty('margin', '0', 'important');
+                        console.log('Menu styles applied, computed display:', window.getComputedStyle(navMenu).display);
+                        console.log('Menu z-index:', window.getComputedStyle(navMenu).zIndex);
+                    });
                 }
                 updateOverlay();
             });
